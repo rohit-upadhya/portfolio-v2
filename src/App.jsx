@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { FaGithub, FaLinkedin, FaGlobe, FaCalendar } from 'react-icons/fa';
+import { FaLocationDot, FaReact } from "react-icons/fa6";
 import { SiHuggingface, SiKaggle  } from 'react-icons/si';
+import { motion } from 'framer-motion';
 // import './App.css'
 
 export default function LandingPage() {
@@ -9,47 +11,21 @@ export default function LandingPage() {
     <Header />
 
     <main className="flex-grow container mx-auto px-8 py-16 flex flex-col items-center justify-center text-center">
-      <h1 className="text-5xl font-bold text-gray-900 mb-4">ROHIT UPADHYA</h1>
+      {/* <h1 className="text-5xl font-bold text-gray-900 mb-4">ROHIT UPADHYA</h1>
       <p className="text-xl text-gray-600 mb-8">
-        Explore my latest blogs, projects, and ongoing research.
+      Hi, I’m Rohit – a computer science graduate passionate about AI, machine learning, NLP, and open-source. I enjoy solving real-world problems with code and sharing what I learn. Read more about my journey in the About section.
       </p>
       <div className="space-x-4">
         <a href="#" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-150">View Blog</a>
         <a href="#" className="border border-gray-400 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition duration-150">See Research</a>
-      </div>
+      </div> */}
+      <IntroSection />
     </main>
-    <div className="flex-grow container mx-auto px-8 py-16 flex flex-col items-center justify-center text-center">
+    <div className="flex-grow container mx-auto px-8 py-13 flex flex-col items-center justify-center text-center">
     <ResumeSection />
     </div>
 
-    <footer class="bg-white shadow-sm light:bg-gray-800">
-      <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 Rohit Upadhya. All Rights Reserved.
-        </span>
-        <ul class="flex space-x-6 flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-            <li>
-              <a href="https://github.com/rohit-upadhya" className="text-gray-600 hover:text-gray-800" aria-label="GitHub" target="_blank">
-                <FaGithub className="w-6 h-6" />
-              </a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/in/rohit-upadhya/" className="text-gray-600 hover:text-gray-800" aria-label="LinkedIn" target="_blank">
-                <FaLinkedin className="w-6 h-6" />
-              </a>
-            </li>
-            <li>
-              <a href="https://huggingface.co/datasets/rohit-upadhya" className="text-gray-600 hover:text-gray-800" aria-label="HuggingFace" target="_blank">
-                <SiHuggingface className="w-6 h-6" />
-              </a>
-            </li>
-            <li>
-              <a href="https://www.kaggle.com/rohitupadhya" className="text-gray-600 hover:text-gray-800" aria-label="Kaggle" target="_blank">
-                <SiKaggle className="w-6 h-6" />
-              </a>
-            </li>
-        </ul>
-      </div>
-    </footer>
+    <Footer />
 
 
   </div>
@@ -61,30 +37,31 @@ function Header(){
     <header className="shadow-md px-8 py-4 bg-white flex justify-between items-center sticky top-0 z-50">
     <div className="font-semibold text-black">
       <nav className="space-x-6">
-        <a href="#" className="text-gray-600 hover:text-gray-900">Home</a>
-        <a href="#" className="text-gray-600 hover:text-gray-900">Blog</a>
-        <a href="#" className="text-gray-600 hover:text-gray-900">Research</a>
+        <a href="https://rohit-upadhya.github.io/portfolio/" target="_blank" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Site v1</a>
+        <a href="#" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Home</a>
+        <a href="#" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Blog</a>
+        <a href="#" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Research</a>
       </nav>
     </div>
     <nav className="space-x-6">
     <ul class="flex space-x-6 flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
-            <a href="https://github.com/rohit-upadhya" className="text-gray-600 hover:text-gray-800" aria-label="GitHub" target="_blank">
+            <a href="https://github.com/rohit-upadhya" className="!text-gray-600 hover:!text-gray-900" aria-label="GitHub" target="_blank">
               <FaGithub className="w-6 h-6" />
             </a>
           </li>
           <li>
-            <a href="https://www.linkedin.com/in/rohit-upadhya/" className="text-gray-600 hover:text-gray-800" aria-label="LinkedIn" target="_blank">
+            <a href="https://www.linkedin.com/in/rohit-upadhya/" className="!text-gray-600 hover:!text-gray-900" aria-label="LinkedIn" target="_blank">
               <FaLinkedin className="w-6 h-6" />
             </a>
           </li>
           <li>
-            <a href="https://huggingface.co/datasets/rohit-upadhya" className="text-gray-600 hover:text-gray-800" aria-label="HuggingFace" target="_blank">
+            <a href="https://huggingface.co/datasets/rohit-upadhya" className="!text-gray-600 hover:!text-gray-900" aria-label="HuggingFace" target="_blank">
               <SiHuggingface className="w-6 h-6" />
             </a>
           </li>
           <li>
-            <a href="https://www.kaggle.com/rohitupadhya" className="text-gray-600 hover:text-gray-800" aria-label="Kaggle" target="_blank">
+            <a href="https://www.kaggle.com/rohitupadhya" className="!text-gray-600 hover:!text-gray-900" aria-label="Kaggle" target="_blank">
               <SiKaggle className="w-6 h-6" />
             </a>
           </li>
@@ -94,12 +71,74 @@ function Header(){
   );
 }
 
+function IntroSection() {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+      <h1 className="text-4xl font-bold text-gray-900 mb-4">ROHIT UPADHYA</h1>
+      <p className="text-gray-600 max-w-xl mb-6">
+        Hi, I'm Rohit – a computer science graduate passionate about AI, machine learning, NLP, and open-source.
+        I enjoy solving real-world problems with code and sharing what I learn.
+      </p>
+
+      <img
+        src="src/assets/profile.jpg"
+        alt="Profile"
+        className="w-50 h-50 rounded-full mb-6 border shadow-md"
+      />
+
+      <div className="flex gap-4 mb-8">
+      <button className="!bg-gray-200 text-gray-800 px-5 py-2.5 rounded-lg hover:bg-gray-300 transition">
+          View Blog
+        </button>
+        <button className="!bg-gray-800 text-white px-5 py-2.5 rounded-lg hover:bg-gray-700 transition">
+          See Research
+        </button>
+      </div>
+
+      {/* <div className="grid grid-cols-3 gap-6 text-center">
+        <div>
+          <p className="text-2xl font-bold">20+</p>
+          <p className="text-gray-500 text-sm">Projects completed</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold">15</p>
+          <p className="text-gray-500 text-sm">Blog Posts written</p>
+        </div>
+        <div>
+          <p className="text-2xl font-bold">2</p>
+          <p className="text-gray-500 text-sm">Degrees earned</p>
+        </div>
+      </div> */}
+    </div>
+  );
+}
+
+
+function ResumeSection() {
+  return (
+    <section className="px-4 py-12 max-w-4xl mx-auto">
+      {/* Main Heading */}
+      <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">My Background</h1>
+
+      {/* Education Section */}
+      <h2 className="text-3xl text-gray-900 font-bold mb-6">Education</h2>
+      <Education />
+
+      {/* Work Experience Section */}
+      <h2 className="text-3xl font-bold my-8 text-gray-900">Work Experience</h2>
+      
+       <WorkExp />
+    </section>
+  );
+}
+
+
 function Education(){
   return (
     <div className="max-w-5xl mx-auto py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <a href="https://www.tum.de/en" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700">
-      <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="src/assets/csm_TUM_de_8592e062d4.png" alt="" />
+      <a href="https://www.tum.de/en" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700" target="_blank">
+      <img class="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg pl-1 pt-1" src="src/assets/tum_logo.png" alt="" />
       <div class="flex flex-col justify-between p-4 leading-normal">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 light:text-white">M.Sc. in Computer Science</h5>
           <h6 class="mb-3 font-normal text-gray-700 light:text-gray-400">Technical University of Munich</h6>
@@ -107,8 +146,8 @@ function Education(){
       </div>
       </a>
 
-      <a href="https://www.nits.ac.in/" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700">
-      <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="src/assets/1920px-National_Institute_Of_Technology_Silchar_Logo.svg.png" alt="" />
+      <a href="https://www.nits.ac.in/" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700" target="_blank">
+      <img class="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg pl-1 pt-1" src="src/assets/1920px-National_Institute_Of_Technology_Silchar_Logo.svg.png" alt="" />
       <div class="flex flex-col justify-between p-4 leading-normal">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 light:text-white">B.Tech. in Computer Science and Engineering</h5>
           <h6 class="mb-3 font-normal text-gray-700 light:text-gray-400">National Institute of Technology Silchar</h6>
@@ -124,13 +163,13 @@ function Education(){
 function WorkExp(){
   return (
     <div className="max-w-5xl mx-auto space-y-4 py-8">
-      <div className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+      <a href="https://fast-ai-movies.de/"  target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="src/assets/fast-ai.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">NLP Engineer</h3>
 
           <div className="mb-2 text-sm text-gray-600 italic">
-            Fast-AI Movies &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> October 2023 – January 2025
+            Fast-AI Movies &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> October 2023 – January 2025 &middot; <FaLocationDot className="inline-block text-gray-500 text-xs" /> Munich, Germany
           </div>
 
           <ul className="list-disc list-outside pl-5 space-y-2 text-sm text-left">
@@ -148,15 +187,15 @@ function WorkExp(){
             </li>
           </ul>
         </div>
-      </div>
+      </a>
 
-      <div className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+      <a href="https://newsroom.accenture.com/news/2021/accenture-completes-acquisition-of-umlaut" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="src/assets/umlaut.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Software Engineer</h3>
 
           <div className="mb-2 text-sm text-gray-600 italic">
-            Umalut Engineering and Consultancy Services &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> October 2023 – May 2024
+            Umalut Engineering and Consultancy Services &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> October 2023 – May 2024 &middot; <FaLocationDot className="inline-block text-gray-500 text-xs" /> Munich, Germany
           </div>
 
           <ul className="list-disc list-outside pl-5 space-y-2 text-sm text-left">
@@ -168,15 +207,15 @@ function WorkExp(){
             </li>
           </ul>
         </div>
-      </div>
+      </a>
 
-      <div className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+      <a href= "https://lowes.co.in/" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="src/assets/lowes.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Software Engineer</h3>
 
           <div className="mb-2 text-sm text-gray-600 italic">
-            Lowe's India &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> July 2019 – July 2022
+            Lowe's India &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> July 2019 – July 2022 &middot; <FaLocationDot className="inline-block text-gray-500 text-xs" /> Bangalore, India
           </div>
 
           <ul className="list-disc list-outside pl-5 space-y-2 text-sm text-left">
@@ -194,15 +233,15 @@ function WorkExp(){
             </li>
           </ul>
         </div>
-      </div>
+      </a>
 
-      <div className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+      <a href="https://www.ias.ac.in/" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="src/assets/iasc.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Summer Research Fellow</h3>
 
           <div className="mb-2 text-sm text-gray-600 italic">
-          Indian Academy of Sciences  &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> May 2018 – June 2018
+          Indian Academy of Sciences  &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> May 2018 – June 2018 &middot; <FaLocationDot className="inline-block text-gray-500 text-xs" /> Bangalore, India
           </div>
 
           <ul className="list-disc list-outside pl-5 space-y-2 text-sm text-left">
@@ -214,7 +253,7 @@ function WorkExp(){
             </li>
           </ul>
         </div>
-      </div>
+      </a>
 
     </div>
     
@@ -222,20 +261,45 @@ function WorkExp(){
   )
 }
 
-function ResumeSection() {
+function Footer(){
   return (
-    <section className="px-4 py-12 max-w-4xl mx-auto">
-      {/* Main Heading */}
-      <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">My Background</h1>
+    <footer className="bg-white shadow-sm light:bg-gray-800">
+      <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          © 2024 Rohit Upadhya. All Rights Reserved.
+          <span className="mx-2">|</span>
+          <a
+            href="https://drive.google.com/file/d/1vteWHX7MhXEHF32GdB700QPRkF6FnmrL/view?usp=drive_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="!text-gray-500 hover:underline hover:!text-gray-800 transition no-underline"
+          >
+            Updated Resume
+          </a>
+          <span className="mx-2">|</span>
+          <a
+            href="mailto:rohitupadhya18@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="!text-gray-500 hover:underline hover:!text-gray-800 transition no-underline"
+          >
+            Contact
+          </a>
+        </span>
 
-      {/* Education Section */}
-      <h2 className="text-3xl text-gray-900 font-bold mb-6">Education</h2>
-      <Education />
-
-      {/* Work Experience Section */}
-      <h2 className="text-3xl font-bold my-8 text-gray-900">Work Experience</h2>
-      
-       <WorkExp />
-    </section>
+        <div className="text-sm text-gray-500 sm:text-center dark:text-gray-400 hover:!text-gray-800 hidden lg:block">
+          Made with love using{' '}
+          <motion.a
+            href="https://react.dev/"
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 5, ease: 'linear' }}
+            className="inline-block align-middle ml-1"
+            target="_blank"
+          >
+            <FaReact className="text-gray-500 text-2xl align-middle" />
+          </motion.a>
+        </div>
+      </div>
+    </footer>
   );
 }
