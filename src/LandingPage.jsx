@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FaCalendar, FaMapMarkerAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function LandingPage() {
     return (
@@ -27,12 +28,16 @@ function IntroSection() {
       />
 
       <div className="flex gap-4 mb-8">
-      <button className="!bg-gray-200 text-gray-800 px-5 py-2.5 rounded-lg hover:bg-gray-300 transition">
-          View Blog
-        </button>
-        <button className="!bg-gray-800 text-white px-5 py-2.5 rounded-lg hover:bg-gray-700 transition">
-          See Research
-        </button>
+        <Link to="/blog/blogs">
+            <button className="!bg-gray-200 text-gray-800 px-5 py-2.5 rounded-lg hover:bg-gray-300 transition cursor-pointer">
+            View Blog
+            </button>
+        </Link>
+        <Link to="/blog/research">
+            <button className="!bg-gray-800 text-white px-5 py-2.5 rounded-lg hover:bg-gray-700 transition cursor-pointer">
+            See Research
+            </button>
+        </Link>
       </div>
 
     </div>
@@ -114,7 +119,7 @@ function WorkExp(){
       <a href="https://newsroom.accenture.com/news/2021/accenture-completes-acquisition-of-umlaut" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/assets/umlaut.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
-          <h3 className="text-xl font-semibold text-gray-900">Software Engineer</h3>
+          <h3 className="text-xl font-semibold text-gray-900">Engineer (Part Time)</h3>
 
           <div className="mb-2 text-sm text-gray-600 italic">
             Umalut Engineering and Consultancy Services &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> October 2023 – May 2024 &middot; <FaMapMarkerAlt className="inline-block text-gray-500 text-xs" /> Munich, Germany

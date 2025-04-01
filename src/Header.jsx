@@ -9,7 +9,7 @@ export default function Header(){
       <nav className="space-x-6">
         <a href="https://rohit-upadhya.github.io/portfolio/" target="_blank" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline hidden md:inline">Site v1</a>
         <Link to="/blog" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Home</Link>
-        <a href="#" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Blog</a>
+        <Link to="/blog/blogs" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Blog</Link>
         <Link to="/blog/research" className="!text-gray-600 hover:!text-gray-900 visited:!text-gray-600 no-underline">Research</Link>
       </nav>
     </div>
