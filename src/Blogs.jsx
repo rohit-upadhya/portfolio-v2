@@ -23,7 +23,7 @@ export default function BlogsPage() {
           </div>
         </div>
 
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <div className="flex justify-center">
             <div className="bg-white border rounded-lg shadow-sm p-6 hover:bg-gray-50 text-left w-3/4">
               <h2 className="text-xl font-bold text-gray-900">Do LLMs think?</h2>
@@ -38,7 +38,7 @@ export default function BlogsPage() {
               </a>
             </div>
           </div>
-        </div>
+        </div> */}
 
 
         </div>

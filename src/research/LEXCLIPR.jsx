@@ -4,7 +4,7 @@ export default function Lexclipr(){
             <div className="text-center">
                 <h2 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Cross-Lingual Query based Paragraph Retrieval for European Court of Human Rights Judgements</h2>
                 <div className="flex justify-center">
-                    <img className="object-contain center w-full rounded-t-lg  md:w-96 md:h-96 md:rounded-none md:rounded-s-lg" src="/assets/ghibli_lexclipr.png" alt="" />
+                    <img className="object-contain center w-full rounded-t-lg  md:w-96 md:h-96 md:rounded-none md:rounded-s-lg" src="/assets/muppet.png" alt="" />
                 </div>
             </div>
             <h4 className="text-2xl font-extrabold text-gray-900 mb-2">Introduction</h4>
@@ -70,9 +70,12 @@ export default function Lexclipr(){
                 The Zero-Shot experiments helped us to establish the capabilities of various Monolingiual and Multilingual LMs on task-specific and domain-specific data.  We made use of the BM25 Lexical method to establish a lexical baseline. Since our judgement paragraphs are all in English, we needed to translate the queries in languages other than English into English. For this we made use of <a href="https://huggingface.co/facebook/nllb-200-3.3B" className="text-blue-600 hover:underline" target="_blank">META’s NLLB-200</a> model. We use the following models to build our baselines on : <a href="https://www.huggingface.co/google-bert/bert-base-uncased" className="text-blue-600 hover:underline" target="_blank">BERT</a>, <a href="https://www.huggingface.co/google-bert/bert-base-multilingual-cased" className="text-blue-600 hover:underline" target="_blank">mBERT</a>, <a href="https://www.huggingface.co/facebook/dpr-ctx_encoder-single-nq-base" className="text-blue-600 hover:underline" target="_blank">DPR</a>, <a href="https://www.huggingface.co/castorini/mdpr-tied-pft-msmarco" className="text-blue-600 hover:underline" target="_blank">mDPR</a>, and <a href="https://www.huggingface.co/joelniklaus/legal-xlm-roberta-base" className="text-blue-600 hover:underline" target="_blank">mLegalBERT</a> models.
             </p>
 
-            <h5 className="text-l font-extrabold text-gray-900 mb-2">Fine-Tuning Experiments</h5>
+            <h5 className="text-l font-extrabold text-gray-900 mb-2">Fine-Tuning</h5>
             <p className="text-gray-700 mb-3 text-justify">
                 With the fine-tuning experiments we look to establish the fact that fine-tuning a pretrined model on domain-specific data generally improves its capability of retreival. <a href="#fig4" className="text-blue-600 hover:underline">Figure 4</a> describes the finetuning process. Since each query might have many paragraphs cited from a single judgement, we lable all these cited paragraphs as positive paragraphs, and the rest of the uncited paragraphs are labelled as negative paragraphs. For each positive paragraph we pick up seven negative paragraphs at random. This forms one iteration of our finetuning process. We pass these paragraphs and the query through an encoder pipeline, obtain the encodings of each of the paragraphs, and the query. We then apply cosine similarity between individual paragraph embeddings and the query. We obtain these results as our logits after a softmax function, and then apply contrastive loss to fine-tune our models.
+            </p>
+            <p className="text-gray-700 mb-3 text-justify">
+                We used two different architectures for our encoder pipelines-Siamese and Two-Tower architectures. In the Siamese pipeline, we use one single model to encode both the judgement paragraphs and the query. We expect this architecture to perform better when we use translated queries. An illustration of this architecture is presented in <a href="#fig5" className="text-blue-600 hover:underline">Figure 5</a>. In the Two-Tower architecture on the other hand, we have two separate encoders for the queries and the judgement paragraphs. This should ideally perform better on multilingual models. An illustration of this architecture is presented in <a href="#fig6" className="text-blue-600 hover:underline">Figure 6</a>.
             </p>
             <div className="flex flex-col items-center justify-center text-center space-y-8">
                 <figure id="fig4" className="mx-auto">
@@ -108,6 +111,63 @@ export default function Lexclipr(){
                     </figcaption>
                 </figure>
             </div>
+
+            <h5 className="text-l font-extrabold text-gray-900 mb-2">Fine-Tuning with Paragraph Contextualization
+            </h5>
+            <p className="text-gray-700 mb-2 text-justify">
+                Fine-grained IR usually means that larger documents are chunked in order to produce finer grained texts, paragraphs, sentences, etc. This activity strips away the contextual information that is present between these chunks. Traditional IR methods ignore this contextual information, relying on the text itself to convey the necessary information. However, there is much contextual information present that is not taken advantage of. What we try to do as part of this research is to inhance paragraph representation using contextualization.
+            </p>
+            <p className="text-gray-700 mb-2 text-justify">
+                We represent each paragraph as a node, and their relationships are modelled as the edges in the graph. We then apply graph-learning algorithms to enhance paragraph enbeddings. We use the encodings of the individual paragraphs as features of a node, and use message passing on these representations. We use a 3 layered GAT (Graph Attention Network) to perform the message passing procedure.
+            </p>
+            <p className="text-gray-700 mb-2 text-justify">
+                Now the obvious question arisis-how do we build these connections? Well there are various ways to do this. Ass part of this thesis we focus on two mothods-Local Method and Global Method. In the Local method, perform an n-hop to connect the paragraphs, where each paragraphs is connected to its previous and next n paragraphs. <a href="#fig7" className="text-blue-600 hover:underline">Figure 7</a> illustrates a 2-hop approach. In the Global method, we try to obtain relevant infromation keeping in mind the global context of the document. We make use of BERTopic to perform topic-modelling and obtain relevant topics from each judgement. These topics are taken as additional nodes. BERTopic also returns the probability of how likely a paragraph belongs to a particular topic. We measure this and only connect the paragraph-topic pairs who's probability of being connected exceeds a particular threshold (in our case 0.30). <a href="#fig8" className="text-blue-600 hover:underline">Figure 8</a> illustrates this approach.
+            </p>
+
+            <div className="flex flex-col items-center justify-center text-center space-y-8">
+                <figure id="fig7" className="mx-auto">
+                    <img
+                    className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
+                    src="/assets/custom_2_hop.png"
+                    alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
+                    />
+                    <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
+                    Fig.7: Graph Construction using 2-Hop Technique.
+                    </figcaption>
+                </figure>
+
+                <figure id="fig8" className="mx-auto">
+                    <img
+                    className="object-contain rounded-t-lg md:w-70  md:rounded-none md:rounded-s-lg"
+                    src="/assets/graph_thresh.png"
+                    alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
+                    />
+                    <figcaption className="mt-2 text-gray-700 text-xs md:w-70">
+                    Fig.8: Graph Construction using Topic (Threshold) Technique.
+                    </figcaption>
+                </figure>
+
+                
+            </div>
+            <p className="text-gray-700 mb-2 text-justify">
+                For our main methodology, we apply these methods in unisen, that is, we make use of both local and global approaches to obtain a hollistic view of the document. We use the same judgements and obtain two different graphs-using local and global approaches, which are then passed into their won GATs. From these we obtain two sets of paragraph representations. We appennd corresponding updated paragraph embeddings. For example embeddings of paragraph 1 from the local approach pipleine is appended with the enbeddings of paragraph 1 from the global approach pipeline and so on. The topic embeddings from the global approach are discarded. We pass these appended embeddings thropugh a feed-forward network to return the embeddings to their original embedding size. These then follow the same process that was followed for the fine-tuning method, applying cosine similarity and constrastive loss. An illustration of this is presented in <a href="#fig9" className="text-blue-600 hover:underline">Figure 9</a>.
+            </p>
+
+            <div className="flex flex-col items-center justify-center text-center space-y-8">
+                <figure id="fig9" className="mx-auto">
+                    <img
+                    className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
+                    src="/assets/graph_process.png"
+                    alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
+                    />
+                    <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
+                    Fig.9: Graph-Based Fine-Tuning Pipeline
+                    </figcaption>
+                </figure>
+            </div>
+            <p className="text-gray-700 mb-2 text-justify">
+                To go through my results, you can visit <a href="https://drive.google.com/file/d/1y6-7BkONmm8KtVCzo4n8drHlLm4TGs7Y/view?usp=sharing" className="text-blue-600 hover:underline">my slides</a>. To view a more detailed report, with more results and nuanced discussions, read my <a href="https://drive.google.com/file/d/1AsN1IkvtPiLIChxOwqAUZ3C9Aa-VZ2gP/view?usp=sharing" className="text-blue-600 hover:underline">full report</a>. We have submitted LexCLiPR to be reviewed for ACL'25. Standby for that as well! :)
+            </p>
         </div>
         
     );
