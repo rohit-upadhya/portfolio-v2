@@ -24,7 +24,7 @@ export default function ResearchPage() {
             </div>
           </div>
   
-          <div className="flex justify-center">
+          {/* <div className="flex justify-center">
             <div className="bg-white border rounded-lg shadow-sm p-6 hover:bg-gray-50 text-left w-3/4">
               <h2 className="text-xl font-bold text-gray-900">Cross-Lingual Query based Paragraph Retrieval for European Court of Human Rights Judgements</h2>
               <p className="text-gray-600 text-sm italic mb-2">Master’s Thesis</p>
@@ -38,9 +38,12 @@ export default function ResearchPage() {
                 Read More →
               </a>
             </div>
-          </div>
+          </div> */}
           
         </div>
+
+        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Paper reviews</h1>
+        <h4 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Coming Soon</h4>
         </div>
     );
   }
