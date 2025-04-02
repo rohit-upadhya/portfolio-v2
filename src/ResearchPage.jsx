@@ -42,7 +42,7 @@ export default function ResearchPage() {
           
         </div>
 
-        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Paper reviews</h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Paper Reviews</h1>
         <h4 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Coming Soon</h4>
         </div>
     );
