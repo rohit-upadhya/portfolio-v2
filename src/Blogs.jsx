@@ -6,8 +6,14 @@ import LlmsThink from './blogs/LlmThink'
 const BlogView = () => {
   const [currentView, setCurrentView] = useState('blogs');
 
-  const showMachineThink = () => setCurrentView('machinethink');
-  const showBlogs = () => setCurrentView('blogs');
+  const showMachineThink = () => {
+    setCurrentView('machinethink');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const showBlogs = () => {
+    setCurrentView('blogs');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div>

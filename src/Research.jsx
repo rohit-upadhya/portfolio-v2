@@ -6,8 +6,14 @@ import Lexclipr from './research/LEXCLIPR'
 const ResearchView = () => {
   const [currentView, setCurrentView] = useState('research');
 
-  const showLexClipr = () => setCurrentView('lexclipr');
-  const showResearch = () => setCurrentView('research');
+  const showLexClipr = () => {
+        setCurrentView('lexclipr');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  const showResearch = () => {
+    setCurrentView('research');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div>
