@@ -1,10 +1,13 @@
-export default function Lexclipr(){
+export default function Lexclipr({ onClose }){
     return(
         <div className="max-w-5xl mx-auto space-y-4 py-8" >
+            <div>
+            <a href="#" className="text-blue-600 hover:underline" onClick={(e) => { e.preventDefault(); onClose(); }}>← Back to Research</a>
+            </div>
             <div className="text-center">
                 <h2 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Cross-Lingual Query based Paragraph Retrieval for European Court of Human Rights Judgements</h2>
                 <div className="flex justify-center">
-                    <img className="object-contain center w-full rounded-t-lg  md:w-96 md:h-96 md:rounded-none md:rounded-s-lg" src="/assets/muppet.png" alt="" />
+                    <img className="object-contain center w-full rounded-t-lg  md:w-96 md:h-96 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/muppet_lexclipr.png" alt="" />
                 </div>
             </div>
             <h4 className="text-2xl font-extrabold text-gray-900 mb-2">Introduction</h4>
@@ -24,7 +27,7 @@ export default function Lexclipr(){
                 <figure id="fig1" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/toc_turkish.jpg"
+                    src="/portfolio-v2/assets/toc_turkish.jpg"
                     alt="Illustration of the Table of Contents from the Turkish case law guide on Terrorism"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -35,7 +38,7 @@ export default function Lexclipr(){
                 <figure id="fig2" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/case_citation_turkish.jpg"
+                    src="/portfolio-v2/assets/case_citation_turkish.jpg"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -46,7 +49,7 @@ export default function Lexclipr(){
                 <figure id="fig3" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/dataset_judgement.png"
+                    src="/portfolio-v2/assets/dataset_judgement.png"
                     alt="Illustration of the cited paragraph from the relevant judgement document."
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -81,7 +84,7 @@ export default function Lexclipr(){
                 <figure id="fig4" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/fine_tune_process_1.png"
+                    src="/portfolio-v2/assets/fine_tune_process_1.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -92,7 +95,7 @@ export default function Lexclipr(){
                 <figure id="fig5" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/siamese.png"
+                    src="/portfolio-v2/assets/siamese.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -103,7 +106,7 @@ export default function Lexclipr(){
                 <figure id="fig6" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/two_tower.png"
+                    src="/portfolio-v2/assets/two_tower.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -118,7 +121,7 @@ export default function Lexclipr(){
                 Fine-grained IR usually means that larger documents are chunked in order to produce finer grained texts, paragraphs, sentences, etc. This activity strips away the contextual information that is present between these chunks. Traditional IR methods ignore this contextual information, relying on the text itself to convey the necessary information. However, there is much contextual information present that is not taken advantage of. What we try to do as part of this research is to inhance paragraph representation using contextualization.
             </p>
             <p className="text-gray-700 mb-2 text-justify">
-                We represent each paragraph as a node, and their relationships are modelled as the edges in the graph. We then apply graph-learning algorithms to enhance paragraph enbeddings. We use the encodings of the individual paragraphs as features of a node, and use message passing on these representations. We use a 3 layered GAT (Graph Attention Network) to perform the message passing procedure.
+                We represent each paragraph as a node, and their relationships are modelled as the edges in the graph. We then apply graph-learning algorithms to enhance paragraph enbeddings. We use the encodings of the individual paragraphs as features of a node, and use message passing on these representations. We use a 3 layered GAT (Graph Attention Network) to perform the message passing procedure. Our underlying encoder is the mDPR, out of the box without any fine-tuning applied. We call this approach LexGraPh : <strong>Legal Gra</strong>ph-based Augmentation of paragr<strong>ph</strong>s.
             </p>
             <p className="text-gray-700 mb-2 text-justify">
                 Now the obvious question arisis-how do we build these connections? Well there are various ways to do this. Ass part of this thesis we focus on two mothods-Local Method and Global Method. In the Local method, perform an n-hop to connect the paragraphs, where each paragraphs is connected to its previous and next n paragraphs. <a href="#fig7" className="text-blue-600 hover:underline">Figure 7</a> illustrates a 2-hop approach. In the Global method, we try to obtain relevant infromation keeping in mind the global context of the document. We make use of BERTopic to perform topic-modelling and obtain relevant topics from each judgement. These topics are taken as additional nodes. BERTopic also returns the probability of how likely a paragraph belongs to a particular topic. We measure this and only connect the paragraph-topic pairs who's probability of being connected exceeds a particular threshold (in our case 0.30). <a href="#fig8" className="text-blue-600 hover:underline">Figure 8</a> illustrates this approach.
@@ -128,7 +131,7 @@ export default function Lexclipr(){
                 <figure id="fig7" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/custom_2_hop.png"
+                    src="/portfolio-v2/assets/custom_2_hop.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -139,7 +142,7 @@ export default function Lexclipr(){
                 <figure id="fig8" className="mx-auto">
                     <img
                     className="object-contain rounded-t-lg md:w-70  md:rounded-none md:rounded-s-lg"
-                    src="/assets/graph_thresh.png"
+                    src="/portfolio-v2/assets/graph_thresh.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-70">
@@ -157,7 +160,7 @@ export default function Lexclipr(){
                 <figure id="fig9" className="mx-auto">
                     <img
                     className="object-contain w-full rounded-t-lg md:w-96  md:rounded-none md:rounded-s-lg"
-                    src="/assets/graph_process.png"
+                    src="/portfolio-v2/assets/graph_process.png"
                     alt="Illustration of contents of a case law guide with explicit references to relevant paragraphs in ECtHR judgments"
                     />
                     <figcaption className="mt-2 text-gray-700 text-xs md:w-96">
@@ -166,8 +169,11 @@ export default function Lexclipr(){
                 </figure>
             </div>
             <p className="text-gray-700 mb-2 text-justify">
-                To go through my results, you can visit <a href="https://drive.google.com/file/d/1y6-7BkONmm8KtVCzo4n8drHlLm4TGs7Y/view?usp=sharing" className="text-blue-600 hover:underline">my slides</a>. To view a more detailed report, with more results and nuanced discussions, read my <a href="https://drive.google.com/file/d/1AsN1IkvtPiLIChxOwqAUZ3C9Aa-VZ2gP/view?usp=sharing" className="text-blue-600 hover:underline">full report</a>. We have submitted LexCLiPR to be reviewed for ACL'25. Standby for that as well! :)
+                To go through the results, you can visit <a href="https://drive.google.com/file/d/1y6-7BkONmm8KtVCzo4n8drHlLm4TGs7Y/view?usp=sharing" className="text-blue-600 hover:underline">my slides</a>. To view a more detailed report, with more results and nuanced discussions, read my <a href="https://drive.google.com/file/d/1AsN1IkvtPiLIChxOwqAUZ3C9Aa-VZ2gP/view?usp=sharing" className="text-blue-600 hover:underline">full report</a> where my sources can also be found. We have submitted LexCLiPR to be reviewed for ACL'25. Standby for that as well! :)
             </p>
+            <div>
+            <a href="#" className="text-blue-600 hover:underline" onClick={(e) => { e.preventDefault(); onClose(); }}>← Back to Research</a>
+            </div>
         </div>
         
     );

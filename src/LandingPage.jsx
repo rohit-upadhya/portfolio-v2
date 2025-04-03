@@ -14,7 +14,7 @@ export default function LandingPage() {
 
 function IntroSection() {
   return (
-    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+    <div className="flex flex-col items-center justify-center py-12 text-center">
       <h1 className="text-4xl font-bold text-gray-900 mb-4">ROHIT UPADHYA</h1>
       <p className="text-gray-600 max-w-xl mb-6">
         Hi, I'm Rohit – a computer science graduate passionate about AI, machine learning, NLP, and open-source.
@@ -22,18 +22,18 @@ function IntroSection() {
       </p>
 
       <img
-        src="/assets/profile.jpg"
+        src="/portfolio-v2/assets/profile.jpg"
         alt="Profile"
         className="w-50 h-50 rounded-full mb-6 border shadow-md"
       />
 
       <div className="flex gap-4 mb-8">
-        <Link to="/blog/blogs">
+        <Link to="/portfolio-v2/blogs">
             <button className="!bg-gray-200 text-gray-800 px-5 py-2.5 rounded-lg hover:bg-gray-300 transition cursor-pointer">
             View Blog
             </button>
         </Link>
-        <Link to="/blog/research">
+        <Link to="/portfolio-v2/research">
             <button className="!bg-gray-800 text-white px-5 py-2.5 rounded-lg hover:bg-gray-700 transition cursor-pointer">
             See Research
             </button>
@@ -47,15 +47,18 @@ function IntroSection() {
 
 function ResumeSection() {
   return (
-    <div className="flex-grow container mx-auto px-8 py-13 flex flex-col items-center justify-center text-center">
-      <section className="px-4 py-12 max-w-4xl mx-auto">
+    <div className="flex flex-col items-center justify-center py-12 text-center">
+      {/* <div className="flex-grow container mx-auto px-8 py-13 flex flex-col items-center justify-center text-center"> */}
+      <section className="py-12 max-w-4xl mx-auto">
       <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">My Background</h1>
       <h2 className="text-3xl text-gray-900 font-bold mb-6">Education</h2>
       <Education />
       <h2 className="text-3xl font-bold my-8 text-gray-900">Work Experience</h2>
        <WorkExp />
     </section>
+    {/* </div> */}
     </div>
+    
   );
 }
 
@@ -65,7 +68,7 @@ function Education(){
     <div className="max-w-5xl mx-auto py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <a href="https://www.tum.de/en" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700" target="_blank">
-      <img class="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg pl-1 pt-1" src="/assets/tum_logo.png" alt="" />
+      <img class="object-contain w-full rounded-t-lg h-32 md:w-30 md:h-30 md:rounded-none md:rounded-s-lg pl-1 pt-1" src="/portfolio-v2/assets/tum_logo.png" alt="" />
       <div class="flex flex-col justify-between p-4 leading-normal">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 light:text-white">M.Sc. in Computer Science</h5>
           <h6 class="mb-3 font-normal text-gray-700 light:text-gray-400">Technical University of Munich</h6>
@@ -74,7 +77,7 @@ function Education(){
       </a>
 
       <a href="https://www.nits.ac.in/" class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row hover:bg-gray-100 light:border-gray-700 light:bg-gray-800 light:hover:bg-gray-700" target="_blank">
-      <img class="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg pl-1 pt-1" src="/assets/1920px-National_Institute_Of_Technology_Silchar_Logo.svg.png" alt="" />
+      <img class="object-contain w-24 md:w-32 rounded-t-lg h-auto md:h-32 pl-1 pt-1" src="/portfolio-v2/assets/1920px-National_Institute_Of_Technology_Silchar_Logo.svg.png" alt="" />
       <div class="flex flex-col justify-between p-4 leading-normal">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 light:text-white">B.Tech. in Computer Science and Engineering</h5>
           <h6 class="mb-3 font-normal text-gray-700 light:text-gray-400">National Institute of Technology Silchar</h6>
@@ -91,7 +94,7 @@ function WorkExp(){
   return (
     <div className="max-w-5xl mx-auto space-y-4 py-8">
       <a href="https://fast-ai-movies.de/"  target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/assets/fast-ai.png" alt="" />
+        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/fast-ai.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">NLP Engineer</h3>
 
@@ -117,7 +120,7 @@ function WorkExp(){
       </a>
 
       <a href="https://newsroom.accenture.com/news/2021/accenture-completes-acquisition-of-umlaut" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/assets/umlaut.png" alt="" />
+        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/umlaut.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Engineer (Part Time)</h3>
 
@@ -137,7 +140,7 @@ function WorkExp(){
       </a>
 
       <a href= "https://lowes.co.in/" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/assets/lowes.png" alt="" />
+        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/lowes.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Software Engineer</h3>
 
@@ -163,7 +166,7 @@ function WorkExp(){
       </a>
 
       <a href="https://www.ias.ac.in/" target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
-        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/assets/iasc.png" alt="" />
+        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/iasc.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
           <h3 className="text-xl font-semibold text-gray-900">Summer Research Fellow</h3>
 

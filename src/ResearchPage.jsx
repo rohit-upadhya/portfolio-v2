@@ -1,10 +1,10 @@
 import { FaGithub, FaLinkedin, FaCalendar, FaReact, FaMapMarkerAlt } from 'react-icons/fa';
 import { SiHuggingface, SiKaggle, SiTailwindcss, SiVite } from 'react-icons/si';
 
-export default function ResearchPage() {
+export default function ResearchPage({ onSwitch }) {
     return (
       <div className="max-w-5xl mx-auto space-y-4 py-8 text-center" >
-        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Research & Publications</h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Research, Reports & Publications</h1>
 
         
         <div className="space-y-6">
@@ -16,11 +16,16 @@ export default function ResearchPage() {
                 We proposed a new Cross-Lingual dataset called <span>LexCLiPR</span> obtained from the articles and judgements of the European Court of Human Rights public database. We then applied this dataset to benchmark various LMs in a zero-shot setting. We finetuned the same models using LexCLiPR, applying two architectures - Simaese and Two-Tower setups. Finally, we proposed a novel Graph-Based approach called LexGraPh whereby we tried to model the paragraphs within each judgement as nodes and the connections between them as edges. This allowed us to capture the relationships between the different paragraphs enabling better retreival. LexCLiPR has been submitted for review at ARR for ACL'25.
               </p>
               <a
-                href="/blog/research/lexclipr"
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSwitch(); // now defined properly
+                }}
                 className="text-blue-600 hover:underline"
               >
                 Read More →
               </a>
+
             </div>
           </div>
 
