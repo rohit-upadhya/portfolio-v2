@@ -93,6 +93,26 @@ function Education(){
 function WorkExp(){
   return (
     <div className="max-w-5xl mx-auto space-y-4 py-8">
+      <a href="https://www.aiviq.com/"  target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
+        <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/aiviq.png" alt="" />
+        <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">
+          <h3 className="text-xl font-semibold text-gray-900">Senior AI/ML Engineer</h3>
+
+          <div className="mb-2 text-sm text-gray-600 italic">
+            Aiviq &middot; <FaCalendar className="inline-block text-gray-500 text-xs" /> May 2025 – Present &middot; <FaMapMarkerAlt className="inline-block text-gray-500 text-xs" /> Remote
+          </div>
+
+          <ul className="list-disc list-outside pl-5 space-y-2 text-sm text-left">
+            <li>
+              Architected and launched a dynamic Azure RAG chat assistant, using Azure Open-AI models, Cognitive Search, Cosmos DB, that continuously ingests new Confluence pages and, via dynamic routing and caching, serves low-latency, context-aware answers to enterprise users.
+            </li>
+            <li>
+              Designing LangGraph-based autonomous customer-service agents that ingest real-time hedge-fund data feeds, perform statistical QC, and auto-populate filings—removing manual reconciliation steps and accelerating regulatory reporting.
+            </li>
+          </ul>
+        </div>
+      </a>
+
       <a href="https://fast-ai-movies.de/"  target="_blank" className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100">
         <img className="object-contain w-full rounded-t-lg h-40 md:w-32 md:h-32 md:rounded-none md:rounded-s-lg" src="/portfolio-v2/assets/fast-ai.png" alt="" />
         <div className="flex flex-col p-4 w-full leading-relaxed text-gray-700">

@@ -13,7 +13,7 @@ export default function ResearchPage({ onSwitch }) {
               <h2 className="text-xl font-bold text-gray-900">Cross-Lingual Query based Paragraph Retrieval for European Court of Human Rights Judgements</h2>
               <p className="text-gray-600 text-sm italic mb-2">Master’s Thesis</p>
               <p className="text-gray-700 mb-2">
-                We proposed a new Cross-Lingual dataset called <span>LexCLiPR</span> obtained from the articles and judgements of the European Court of Human Rights public database. We then applied this dataset to benchmark various LMs in a zero-shot setting. We finetuned the same models using LexCLiPR, applying two architectures - Simaese and Two-Tower setups. Finally, we proposed a novel Graph-Based approach called LexGraPh whereby we tried to model the paragraphs within each judgement as nodes and the connections between them as edges. This allowed us to capture the relationships between the different paragraphs enabling better retreival. LexCLiPR has been submitted for review at ARR for ACL'25.
+                We proposed a new Cross-Lingual dataset called <span>LexCLiPR</span> obtained from the articles and judgements of the European Court of Human Rights public database. We then applied this dataset to benchmark various LMs in a zero-shot setting. We finetuned the same models using LexCLiPR, applying two architectures - Simaese and Two-Tower setups. Finally, we proposed a novel Graph-Based approach called GAVEL whereby we tried to model the paragraphs within each judgement as nodes and the connections between them as edges. This allowed us to capture the relationships between the different paragraphs enabling better retreival. LexCLiPR was accepted and presented at ACL'25. GAVEL has been submitted to ARR for AACL'25.
               </p>
               <a
                 href="#"
@@ -26,6 +26,14 @@ export default function ResearchPage({ onSwitch }) {
                 Read More →
               </a>
 
+              <br></br>
+              <a
+                href="https://aclanthology.org/2025.acl-long.683/"
+                className="text-blue-600 hover:underline"
+                target='_blank'
+              >
+                Link to ACL Paper →
+              </a>
             </div>
           </div>
 
