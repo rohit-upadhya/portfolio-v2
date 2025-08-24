@@ -12,7 +12,7 @@ export default function Footer(){
             </span>
             <span className="mx-2 hidden md:inline">|</span>
             <a
-              href="https://drive.google.com/file/d/17bwS1VmSJYb_JDFsRXHSAKFFO3gTP3-8/view?usp=sharing"
+              href="https://drive.google.com/file/d/17bwS1VmSJYb_JDFsRXHSAKFFO3gTP3-8/view"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm !text-gray-500 hover:underline hover:!text-gray-800 transition no-underline"
