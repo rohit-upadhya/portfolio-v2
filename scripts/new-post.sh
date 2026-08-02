@@ -18,6 +18,8 @@ if [ -e "$file" ]; then
   exit 1
 fi
 
+mkdir -p "$(dirname "$file")"
+
 cat > "$file" <<EOF
 ---
 title: "$title"
