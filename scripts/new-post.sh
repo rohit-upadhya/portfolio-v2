@@ -25,6 +25,9 @@ cat > "$file" <<EOF
 title: "$title"
 date: $date
 description: ""
+# links:
+#   - label: "paper"
+#     href: "https://example.com"
 ---
 
 EOF
