@@ -33,6 +33,7 @@ export const workExperience: Role[] = [
   {
     title: 'Software Engineer - ML',
     org: 'Whatfix',
+    href: 'https://whatfix.com/',
     period: 'January 2026 – Present',
     location: 'Bangalore, India',
     bullets: [
