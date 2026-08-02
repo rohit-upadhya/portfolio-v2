@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Snake" description="A small game of snake.">
+  <a href="/games" class="nav-link">back to games</a>
+
+  <div class="mt-6 flex flex-col items-center gap-4">
+    <div class="flex w-full max-w-[420px] justify-between text-sm">
+      <span>score: <span id="score">0</span></span>
+      <span class="muted">best: <span id="best">0</span></span>
+    </div>
+
+    <canvas id="board" width="400" height="400" class="w-full max-w-[420px] border border-[color:var(--border)]"></canvas>
+
+    <p class="muted text-center text-sm">
+      arrow keys / wasd to move &middot; swipe on mobile &middot; space to restart
+    </p>
+
+    <button type="button" id="restart" class="btn">restart</button>
+  </div>
+</BaseLayout>
+
+<script>
+  const canvas = document.getElementById('board') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+  const scoreEl = document.getElementById('score')!;
+  const bestEl = document.getElementById('best')!;
+  const restartBtn = document.getElementById('restart')!;
+
+  const GRID = 20;
+  const CELL = canvas.width / GRID;
+  const TICK_MS = 120;
+
+  function theme() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+      bg: style.getPropertyValue('--bg-raised').trim(),
+      fg: style.getPropertyValue('--fg').trim(),
+      accent: style.getPropertyValue('--accent').trim(),
+      border: style.getPropertyValue('--border-dim').trim(),
+    };
+  }
+
+  type Point = { x: number; y: number };
+
+  let snake: Point[];
+  let dir: Point;
+  let nextDir: Point;
+  let food: Point;
+  let score: number;
+  let alive: boolean;
+  let timer: ReturnType<typeof setInterval> | undefined;
+
+  const best = { value: Number(localStorage.getItem('snake-best') || 0) };
+  bestEl.textContent = String(best.value);
+
+  function randomFood(): Point {
+    let p: Point;
+    do {
+      p = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID) };
+    } while (snake.some((s) => s.x === p.x && s.y === p.y));
+    return p;
+  }
+
+  function reset() {
+    snake = [
+      { x: 9, y: 10 },
+      { x: 8, y: 10 },
+      { x: 7, y: 10 },
+    ];
+    dir = { x: 1, y: 0 };
+    nextDir = dir;
+    score = 0;
+    alive = true;
+    scoreEl.textContent = '0';
+    food = randomFood();
+    if (timer) clearInterval(timer);
+    timer = setInterval(tick, TICK_MS);
+    draw();
+  }
+
+  function tick() {
+    dir = nextDir;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    const hitWall = head.x < 0 || head.y < 0 || head.x >= GRID || head.y >= GRID;
+    const eating = !hitWall && head.x === food.x && head.y === food.y;
+    // the tail vacates its cell this tick unless the snake is growing, so exclude
+    // it from the collision check — otherwise moving into the tail's old spot
+    // (a legal move) reads as a false self-collision.
+    const body = eating ? snake : snake.slice(0, -1);
+    const hitSelf = body.some((s) => s.x === head.x && s.y === head.y);
+
+    if (hitWall || hitSelf) {
+      alive = false;
+      if (timer) clearInterval(timer);
+      if (score > best.value) {
+        best.value = score;
+        localStorage.setItem('snake-best', String(best.value));
+        bestEl.textContent = String(best.value);
+      }
+      draw();
+      return;
+    }
+
+    snake.unshift(head);
+    if (eating) {
+      score += 1;
+      scoreEl.textContent = String(score);
+      food = randomFood();
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+
+  function draw() {
+    const t = theme();
+    ctx.fillStyle = t.bg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = t.border;
+    ctx.lineWidth = 1;
+    for (let i = 1; i < GRID; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * CELL, 0);
+      ctx.lineTo(i * CELL, canvas.height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * CELL);
+      ctx.lineTo(canvas.width, i * CELL);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = t.accent;
+    ctx.fillRect(food.x * CELL + 2, food.y * CELL + 2, CELL - 4, CELL - 4);
+
+    ctx.fillStyle = t.fg;
+    snake.forEach((s, i) => {
+      const pad = i === 0 ? 1 : 3;
+      ctx.fillRect(s.x * CELL + pad, s.y * CELL + pad, CELL - pad * 2, CELL - pad * 2);
+    });
+
+    if (!alive) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = t.fg;
+      ctx.font = '20px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('game over', canvas.width / 2, canvas.height / 2 - 12);
+      ctx.font = '14px ui-monospace, monospace';
+      ctx.fillText('press space or restart', canvas.width / 2, canvas.height / 2 + 14);
+    }
+  }
+
+  function setDir(x: number, y: number) {
+    // ignore reversals directly into the snake's own neck
+    if (snake.length > 1 && dir.x === -x && dir.y === -y) return;
+    nextDir = { x, y };
+  }
+
+  window.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowUp':
+      case 'w':
+      case 'W':
+        e.preventDefault();
+        setDir(0, -1);
+        break;
+      case 'ArrowDown':
+      case 's':
+      case 'S':
+        e.preventDefault();
+        setDir(0, 1);
+        break;
+      case 'ArrowLeft':
+      case 'a':
+      case 'A':
+        e.preventDefault();
+        setDir(-1, 0);
+        break;
+      case 'ArrowRight':
+      case 'd':
+      case 'D':
+        e.preventDefault();
+        setDir(1, 0);
+        break;
+      case ' ':
+        e.preventDefault();
+        if (!alive) reset();
+        break;
+    }
+  });
+
+  restartBtn.addEventListener('click', reset);
+
+  let touchStart: Point | null = null;
+  canvas.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    touchStart = { x: t.clientX, y: t.clientY };
+  });
+  canvas.addEventListener('touchend', (e) => {
+    if (!touchStart) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.x;
+    const dy = t.clientY - touchStart.y;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      setDir(dx > 0 ? 1 : -1, 0);
+    } else if (Math.abs(dy) > 10) {
+      setDir(0, dy > 0 ? 1 : -1);
+    }
+    touchStart = null;
+  });
+
+  reset();
+</script>
