@@ -1,6 +1,9 @@
 ---
 title: "GAVEL — Graph-Augmented Paragraph Retrieval for Legal Judgments"
 description: "Extends LexCLiPR with dual Graph Attention Networks (local 5-hop adjacency + global BERTopic topic nodes) trained under contrastive loss, outperforming a fully fine-tuned bi-encoder with a frozen mDPR encoder."
+links:
+  - label: "huggingface"
+    href: "https://huggingface.co/rohit-upadhya/lexclipr-graph-stack__mdpr-tied-pft-msmarco__original"
 order: 1
 ---
 
