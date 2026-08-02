@@ -8,7 +8,7 @@ export interface Education {
 export interface Role {
   title: string;
   org: string;
-  href: string;
+  href?: string;
   period: string;
   location: string;
   bullets: string[];
@@ -19,42 +19,51 @@ export const education: Education[] = [
     degree: 'M.Sc. in Computer Science',
     school: 'Technical University of Munich',
     href: 'https://www.tum.de/en',
-    logo: '/assets/tum_logo.png',
     period: 'October 2022 – February 2025',
   },
   {
     degree: 'B.Tech. in Computer Science and Engineering',
     school: 'National Institute of Technology Silchar',
     href: 'https://www.nits.ac.in/',
-    logo: '/assets/1920px-National_Institute_Of_Technology_Silchar_Logo.svg.png',
     period: 'August 2015 – May 2019',
   },
 ];
 
 export const workExperience: Role[] = [
   {
-    title: 'Senior AI/ML Engineer',
-    org: 'Aiviq',
-    href: 'https://www.aiviq.com/',
-    logo: '/assets/aiviq.png',
-    period: 'May 2025 – Present',
-    location: 'Remote',
+    title: 'Software Engineer - ML',
+    org: 'Whatfix',
+    period: 'January 2026 – Present',
+    location: 'Bangalore, India',
     bullets: [
-      'Architected and launched a dynamic Azure RAG chat assistant, using Azure Open-AI models, Cognitive Search, Cosmos DB, that continuously ingests new Confluence pages and, via dynamic routing and caching, serves low-latency, context-aware answers to enterprise users.',
-      'Designing LangGraph-based autonomous customer-service agents that ingest real-time hedge-fund data feeds, perform statistical QC, and auto-populate filings—removing manual reconciliation steps and accelerating regulatory reporting.',
+      'Designed the evaluation framework for a production Computer Use Agent — run telemetry, failure taxonomy, and error attribution driving prompt and architecture iteration; 62% autonomous task completion across 800+ real-world sites.',
+      'Built a benchmarking framework comparing Gemini against the incumbent Claude-based agent on task accuracy and latency, driving model selection for enterprise deployments.',
+      'Found the dominant failure category conflated environment limits with recoverable agent errors; recategorizing separated true blockers from fixable behavior and redirected improvement effort.',
+      'Architected an end-to-end Sales Ops automation integrating a CUA with event-driven Power Automate pipelines triggered by incoming emails; cut deal processing time by 30 min/sale (~180 min/week).',
     ],
   },
   {
-    title: 'NLP Engineer',
+    title: 'Senior AI/ML Engineer',
+    org: 'Aiviq',
+    href: 'https://www.aiviq.com/',
+    period: 'May 2025 – January 2026',
+    location: 'Remote, India',
+    bullets: [
+      'Fine-tuned embedding models for domain-specific semantic retrieval, improving recall@1 from ~40% to 85%+ over off-the-shelf embeddings.',
+      'Architected and deployed a containerized Azure RAG pipeline (Azure OpenAI, Azure AI Search, Cosmos DB, Docker, GitHub Actions) with dynamic query routing, continuously ingesting Confluence pages to serve low-latency, context-aware answers to enterprise users.',
+      'Designed a semantic matching pipeline using cross-encoder rerankers, improving client match rate by 20% over baseline and replacing manual matching, thereby eliminating 8+ hours of weekly manual work.',
+    ],
+  },
+  {
+    title: 'NLP Engineer (Founding Engineer)',
     org: 'Fast-AI Movies',
     href: 'https://fast-ai-movies.de/',
-    logo: '/assets/fast-ai.png',
     period: 'October 2023 – January 2025',
     location: 'Munich, Germany',
     bullets: [
-      'Developed a Streamlit-based quiz generator leveraging PEFT-tuned LLaMA/Mistral models, reducing manual workload by 80%.',
-      'Designed a relation extraction module using GPT-4 & fine-tuned LLaMA models with a Streamlit UI for testing and demos; structured 12,000+ support interactions to improve response accuracy and speed.',
-      'Engineered backend infrastructure for an automated tutorial generator using YOLO-based UI detection, Azure TTS/STT, OpenAI APIs — streamlining onboarding and training content creation.',
+      'Developed a quiz generator app leveraging PEFT fine-tuned LLaMA and Mistral models, reducing manual workload by over 80%.',
+      'Designed a relation extraction module using GPT-4 & fine-tuned LLaMA models, with a Streamlit UI for testing and demos; structured 12,000+ support interactions to improve response accuracy and speed.',
+      'Architected and engineered an automated tutorial generator using YOLO-based UI detection, Azure TTS/STT, OpenAI APIs, streamlining content creation for onboarding and training.',
       'Ran Agile sprints and translated technical plans for cross-functional teams, aligning roadmap goals across engineering and non-technical stakeholders.',
     ],
   },
@@ -62,7 +71,6 @@ export const workExperience: Role[] = [
     title: 'Engineer (Part Time)',
     org: "Umlaut Engineering and Consultancy Services",
     href: 'https://newsroom.accenture.com/news/2021/accenture-completes-acquisition-of-umlaut',
-    logo: '/assets/umlaut.png',
     period: 'October 2023 – May 2024',
     location: 'Munich, Germany',
     bullets: [
@@ -74,7 +82,6 @@ export const workExperience: Role[] = [
     title: 'Software Engineer',
     org: "Lowe's India",
     href: 'https://lowes.co.in/',
-    logo: '/assets/lowes.png',
     period: 'July 2019 – July 2022',
     location: 'Bangalore, India',
     bullets: [
@@ -88,12 +95,45 @@ export const workExperience: Role[] = [
     title: 'Summer Research Fellow',
     org: 'Indian Academy of Sciences',
     href: 'https://www.ias.ac.in/',
-    logo: '/assets/iasc.png',
     period: 'May 2018 – June 2018',
     location: 'Bangalore, India',
     bullets: [
       'Coded image classification models using CNNs and Open-CV for various imaging datasets.',
       'Developed a secure registration portal with role-based access control for an NGO, enabling streamlined user onboarding for community services.',
     ],
+  },
+];
+
+export interface SkillGroup {
+  label: string;
+  items: string[];
+}
+
+export const skills: SkillGroup[] = [
+  { label: 'languages', items: ['Python', 'JavaScript', 'SQL', 'Shell'] },
+  {
+    label: 'llms & agents',
+    items: [
+      'RAG',
+      'Computer Use Agents (CUA)',
+      'Agent Evaluation & Benchmarking',
+      'PEFT/LoRA Fine-tuning',
+      'Instruction Tuning',
+      'Prompt Engineering',
+      'Cross-Encoders',
+      'Contrastive Learning',
+    ],
+  },
+  {
+    label: 'ml frameworks',
+    items: ['PyTorch', 'HuggingFace (Transformers, PEFT, Datasets)', 'PyTorch Geometric'],
+  },
+  {
+    label: 'retrieval & data',
+    items: ['FAISS', 'Azure AI Search', 'Elasticsearch', 'Weaviate', 'Cosmos DB', 'Kafka'],
+  },
+  {
+    label: 'infra & devops',
+    items: ['Azure (ML, Functions, OpenAI)', 'Docker', 'GitHub Actions', 'CI/CD', 'Linux', 'AWS S3'],
   },
 ];

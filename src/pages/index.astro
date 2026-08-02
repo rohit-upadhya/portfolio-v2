@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { education, workExperience } from '../data/experience';
+import { education, workExperience, skills } from '../data/experience';
 ---
 
 <BaseLayout title="Home">
   <section class="flex flex-col items-center gap-6 py-8 text-center">
-    <h1 class="cursor text-3xl font-bold">ROHIT UPADHYA</h1>
+    <h1 class="text-3xl font-bold">ROHIT UPADHYA</h1>
     <p class="max-w-xl muted">
       Hi, I'm Rohit &mdash; a computer science graduate passionate about AI, machine learning, NLP,
       and open-source. I enjoy solving real-world problems with code and sharing what I learn.
@@ -18,8 +18,21 @@ import { education, workExperience } from '../data/experience';
 
   <hr />
 
+  <section class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">skills</h2>
+    <div class="card flex flex-col gap-2">
+      {skills.map((group) => (
+        <p class="text-sm">
+          <span class="font-bold">{group.label}:</span> <span class="muted">{group.items.join(', ')}</span>
+        </p>
+      ))}
+    </div>
+  </section>
+
+  <hr />
+
   <section class="flex flex-col gap-6">
-    <h2 class="prompt text-2xl font-bold">education</h2>
+    <h2 class="text-2xl font-bold">education</h2>
     <div class="grid gap-4 sm:grid-cols-2">
       {education.map((entry) => (
         <a href={entry.href} target="_blank" rel="noopener noreferrer" class="card flex flex-col gap-2">
@@ -34,19 +47,27 @@ import { education, workExperience } from '../data/experience';
   <hr />
 
   <section class="flex flex-col gap-6">
-    <h2 class="prompt text-2xl font-bold">work experience</h2>
+    <h2 class="text-2xl font-bold">work experience</h2>
     <div class="flex flex-col gap-4">
-      {workExperience.map((role) => (
-        <a href={role.href} target="_blank" rel="noopener noreferrer" class="card flex flex-col gap-2">
-          <h3 class="font-bold">{role.title}</h3>
-          <p class="muted text-sm italic">
-            {role.org} &middot; {role.period} &middot; {role.location}
-          </p>
-          <ul class="list-inside list-disc space-y-1 text-sm">
-            {role.bullets.map((bullet) => <li>{bullet}</li>)}
-          </ul>
-        </a>
-      ))}
+      {workExperience.map((role) => {
+        const Tag = role.href ? 'a' : 'div';
+        return (
+          <Tag
+            href={role.href}
+            target={role.href ? '_blank' : undefined}
+            rel={role.href ? 'noopener noreferrer' : undefined}
+            class="card flex flex-col gap-2"
+          >
+            <h3 class="font-bold">{role.title}</h3>
+            <p class="muted text-sm italic">
+              {role.org} &middot; {role.period} &middot; {role.location}
+            </p>
+            <ul class="list-inside list-disc space-y-1 text-sm">
+              {role.bullets.map((bullet) => <li>{bullet}</li>)}
+            </ul>
+          </Tag>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>

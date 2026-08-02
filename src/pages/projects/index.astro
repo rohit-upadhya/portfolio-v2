@@ -2,20 +2,19 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const items = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+const items = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title="Research" description="Research, reports, and publications.">
-  <h1 class="mb-6 text-2xl font-bold">research, reports &amp; publications</h1>
+<BaseLayout title="Projects" description="Things I've built.">
+  <h1 class="mb-6 text-2xl font-bold">projects</h1>
 
   <div class="flex flex-col gap-4">
     {items.map((item) => (
       <div class="card flex flex-col gap-2">
         <h2 class="text-xl font-bold">{item.data.title}</h2>
-        {item.data.kind && <p class="muted text-sm italic">{item.data.kind}</p>}
         <p class="text-sm">{item.data.description}</p>
         <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-          <a href={`/research/${item.id}`} class="nav-link">read more</a>
+          <a href={`/projects/${item.id}`} class="nav-link">read more</a>
           {item.data.links?.map((link) => (
             <a href={link.href} target="_blank" rel="noopener noreferrer" class="nav-link">
               {link.label}
@@ -25,9 +24,4 @@ const items = (await getCollection('research')).sort((a, b) => a.data.order - b.
       </div>
     ))}
   </div>
-
-  <hr />
-
-  <h2 class="mb-2 text-2xl font-bold">paper reviews</h2>
-  <p class="muted">coming soon</p>
 </BaseLayout>

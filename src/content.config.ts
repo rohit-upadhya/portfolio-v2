@@ -29,4 +29,21 @@ const research = defineCollection({
   }),
 });
 
-export const collections = { blog, research };
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string(),
+        })
+      )
+      .optional(),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { blog, research, projects };
