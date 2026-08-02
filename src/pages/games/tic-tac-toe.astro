@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Tic-Tac-Toe" description="Tic-tac-toe against an unbeatable computer.">
+  <a href="/games" class="nav-link">back to games</a>
+
+  <div class="mt-6 flex flex-col items-center gap-4">
+    <p id="status" class="text-lg">your turn (x)</p>
+
+    <div id="board" class="grid grid-cols-3 gap-2"></div>
+
+    <button type="button" id="restart" class="btn">restart</button>
+  </div>
+</BaseLayout>
+
+<style>
+  .cell {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--bg-raised);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .cell:disabled {
+    cursor: default;
+  }
+  .cell.win {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>
+
+<script>
+  type Cell = 'x' | 'o' | null;
+
+  const boardEl = document.getElementById('board')!;
+  const statusEl = document.getElementById('status')!;
+  const restartBtn = document.getElementById('restart')!;
+
+  const LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6],
+  ];
+
+  let cells: Cell[];
+  let over: boolean;
+
+  function winner(b: Cell[]): { winner: Cell; line: number[] | null } {
+    for (const line of LINES) {
+      const [a, c, d] = line;
+      if (b[a] && b[a] === b[c] && b[a] === b[d]) return { winner: b[a], line };
+    }
+    if (b.every((c) => c !== null)) return { winner: null, line: null };
+    return { winner: undefined as unknown as Cell, line: null };
+  }
+
+  function minimax(b: Cell[], isMax: boolean, depth: number): number {
+    const { winner: w } = winner(b);
+    if (w === 'o') return 10 - depth;
+    if (w === 'x') return depth - 10;
+    if (w === null) return 0;
+
+    if (isMax) {
+      let best = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (b[i]) continue;
+        b[i] = 'o';
+        best = Math.max(best, minimax(b, false, depth + 1));
+        b[i] = null;
+      }
+      return best;
+    } else {
+      let best = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (b[i]) continue;
+        b[i] = 'x';
+        best = Math.min(best, minimax(b, true, depth + 1));
+        b[i] = null;
+      }
+      return best;
+    }
+  }
+
+  function computerMove() {
+    let bestScore = -Infinity;
+    let bestMove = -1;
+    for (let i = 0; i < 9; i++) {
+      if (cells[i]) continue;
+      cells[i] = 'o';
+      const score = minimax(cells, false, 0);
+      cells[i] = null;
+      if (score > bestScore) {
+        bestScore = score;
+        bestMove = i;
+      }
+    }
+    if (bestMove >= 0) cells[bestMove] = 'o';
+  }
+
+  function render() {
+    const { winner: w, line } = winner(cells);
+    boardEl.innerHTML = '';
+    cells.forEach((cell, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cell' + (line?.includes(i) ? ' win' : '');
+      btn.textContent = cell ? cell : '';
+      btn.disabled = over || !!cell;
+      btn.addEventListener('click', () => play(i));
+      boardEl.appendChild(btn);
+    });
+
+    if (w === 'x') {
+      statusEl.textContent = 'you win!';
+      over = true;
+    } else if (w === 'o') {
+      statusEl.textContent = 'computer wins';
+      over = true;
+    } else if (w === null) {
+      statusEl.textContent = "it's a draw";
+      over = true;
+    } else {
+      statusEl.textContent = over ? statusEl.textContent : 'your turn (x)';
+    }
+  }
+
+  function play(i: number) {
+    if (over || cells[i]) return;
+    cells[i] = 'x';
+    const { winner: w } = winner(cells);
+    if (w === undefined) {
+      computerMove();
+    }
+    render();
+  }
+
+  function reset() {
+    cells = Array(9).fill(null);
+    over = false;
+    render();
+  }
+
+  restartBtn.addEventListener('click', reset);
+  reset();
+</script>

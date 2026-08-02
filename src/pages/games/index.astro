@@ -1,7 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const games = [{ href: '/games/snake', title: 'Snake', description: 'Classic grid snake. Arrow keys or WASD to move.' }];
+const games = [
+  { href: '/games/snake', title: 'Snake', description: 'Classic grid snake. Arrow keys or WASD to move.' },
+  { href: '/games/tic-tac-toe', title: 'Tic-Tac-Toe', description: 'Against an unbeatable minimax computer. Best you can do is draw.' },
+  { href: '/games/2048', title: '2048', description: 'Slide and merge tiles to reach 2048. Arrow keys, WASD, or swipe.' },
+];
 ---
 
 <BaseLayout title="Games" description="A few small games, because why not.">
