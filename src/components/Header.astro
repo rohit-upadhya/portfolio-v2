@@ -6,8 +6,6 @@ const navLinks = [
   { href: '/research', label: 'research' },
 ];
 
-const legacyLink = { href: 'https://rohit-upadhya.github.io/portfolio/', label: 'site v1' };
-
 const socialLinks = [
   { href: 'https://github.com/rohit-upadhya', label: 'gh' },
   { href: 'https://www.linkedin.com/in/rohit-upadhya/', label: 'in' },
@@ -23,7 +21,7 @@ function isActive(href: string) {
 ---
 
 <header class="sticky top-0 z-50 border-b border-[color:var(--border-dim)] bg-[color:var(--bg)]/95 backdrop-blur-sm">
-  <div class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 sm:px-6">
+  <div class="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 sm:px-6">
     <input type="checkbox" id="nav-toggle" class="peer hidden" />
 
     <div class="flex items-center gap-4">
@@ -31,19 +29,16 @@ function isActive(href: string) {
         menu
       </label>
 
-      <nav class="hidden flex-wrap items-center gap-x-4 gap-y-1 sm:flex">
+      <nav class="hidden flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:flex">
         {navLinks.map((link) => (
           <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? 'page' : undefined}>
             {link.label}
           </a>
         ))}
-        <a href={legacyLink.href} target="_blank" rel="noopener noreferrer" class="nav-link">
-          {legacyLink.label}
-        </a>
       </nav>
     </div>
 
-    <nav class="hidden flex-wrap items-center gap-x-4 gap-y-1 text-sm sm:flex">
+    <nav class="hidden flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:flex">
       {socialLinks.map((link) => (
         <a href={link.href} target="_blank" rel="noopener noreferrer" class="nav-link">
           {link.label}
@@ -57,9 +52,6 @@ function isActive(href: string) {
       {navLinks.map((link) => (
         <a href={link.href} class="nav-link">{link.label}</a>
       ))}
-      <a href={legacyLink.href} target="_blank" rel="noopener noreferrer" class="nav-link">
-        {legacyLink.label}
-      </a>
       <hr class="my-1" />
       {socialLinks.map((link) => (
         <a href={link.href} target="_blank" rel="noopener noreferrer" class="nav-link">
