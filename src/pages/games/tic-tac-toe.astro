@@ -14,35 +14,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<style>
-  .cell {
-    width: 90px;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-    border: 1px solid var(--border);
-    background: var(--bg-raised);
-    color: var(--fg);
-    cursor: pointer;
-  }
-  .cell:disabled {
-    cursor: default;
-  }
-  .cell.win {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-</style>
-
 <script>
   type Cell = 'x' | 'o' | null;
 
   const boardEl = document.getElementById('board')!;
   const statusEl = document.getElementById('status')!;
   const restartBtn = document.getElementById('restart')!;
+
+  const CELL_BASE =
+    'flex h-[90px] w-[90px] items-center justify-center border text-4xl font-bold cursor-pointer disabled:cursor-default';
+  const CELL_NORMAL = 'border-[color:var(--border)] bg-[color:var(--bg-raised)] text-[color:var(--fg)]';
+  const CELL_WIN = 'border-[color:var(--accent)] bg-[color:var(--bg-raised)] text-[color:var(--accent)]';
 
   const LINES = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -111,7 +93,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     cells.forEach((cell, i) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'cell' + (line?.includes(i) ? ' win' : '');
+      btn.className = `${CELL_BASE} ${line?.includes(i) ? CELL_WIN : CELL_NORMAL}`;
       btn.textContent = cell ? cell : '';
       btn.disabled = over || !!cell;
       btn.addEventListener('click', () => play(i));

@@ -21,21 +21,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </div>
 </BaseLayout>
 
-<style>
-  .tile {
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--fg);
-    background: var(--bg-raised);
-    border: 1px solid var(--border-dim);
-  }
-</style>
-
 <script>
   const SIZE = 4;
   const WIN_VALUE = 2048;
@@ -151,7 +136,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     grid.forEach((row) => {
       row.forEach((value) => {
         const div = document.createElement('div');
-        div.className = 'tile';
+        div.className =
+          'flex h-[70px] w-[70px] items-center justify-center border text-xl font-bold border-[color:var(--border-dim)] text-[color:var(--fg)]';
         div.style.background = tileBg(value);
         div.textContent = value ? String(value) : '';
         boardEl.appendChild(div);
