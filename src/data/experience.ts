@@ -2,7 +2,6 @@ export interface Education {
   degree: string;
   school: string;
   href: string;
-  logo: string;
   period: string;
 }
 
@@ -10,7 +9,6 @@ export interface Role {
   title: string;
   org: string;
   href: string;
-  logo: string;
   period: string;
   location: string;
   bullets: string[];
