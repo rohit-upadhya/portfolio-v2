@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Minesweeper" description="Classic minesweeper, 9x9 with 10 mines.">
+  <a href="/games" class="nav-link">back to games</a>
+
+  <div class="mt-6 flex flex-col items-center gap-4">
+    <div class="flex w-full max-w-[320px] justify-between text-sm">
+      <span>mines: <span id="mines-left">10</span></span>
+      <span class="muted">time: <span id="time">0</span>s</span>
+    </div>
+
+    <div id="board" class="grid grid-cols-9 gap-[2px]"></div>
+
+    <p id="status" class="text-sm">click a cell to start</p>
+
+    <div class="flex gap-4">
+      <button type="button" id="flag-mode" class="btn">flag mode: off</button>
+      <button type="button" id="restart" class="btn">restart</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const ROWS = 9;
+  const COLS = 9;
+  const MINES = 10;
+
+  interface CellState {
+    mine: boolean;
+    revealed: boolean;
+    flagged: boolean;
+    adjacent: number;
+  }
+
+  const boardEl = document.getElementById('board')!;
+  const minesLeftEl = document.getElementById('mines-left')!;
+  const timeEl = document.getElementById('time')!;
+  const statusEl = document.getElementById('status')!;
+  const flagModeBtn = document.getElementById('flag-mode')!;
+  const restartBtn = document.getElementById('restart')!;
+
+  let grid: CellState[][];
+  let started: boolean;
+  let over: boolean;
+  let won: boolean;
+  let flagMode = false;
+  let timerHandle: ReturnType<typeof setInterval> | undefined;
+  let elapsed = 0;
+
+  const CELL_BASE = 'flex h-[32px] w-[32px] items-center justify-center border text-sm font-bold select-none';
+  const CELL_HIDDEN = 'cursor-pointer border-[color:var(--border)] bg-[color:var(--bg-raised)] text-[color:var(--fg)]';
+  const CELL_REVEALED = 'border-[color:var(--border-dim)] bg-[color:var(--bg)] text-[color:var(--fg)]';
+  const CELL_MINE = 'border-[color:var(--border-dim)] bg-[color:var(--bg)] text-[color:var(--accent)]';
+
+  function neighbors(r: number, c: number): [number, number][] {
+    const out: [number, number][] = [];
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        const nr = r + dr;
+        const nc = c + dc;
+        if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) out.push([nr, nc]);
+      }
+    }
+    return out;
+  }
+
+  function emptyGrid(): CellState[][] {
+    return Array.from({ length: ROWS }, () =>
+      Array.from({ length: COLS }, () => ({ mine: false, revealed: false, flagged: false, adjacent: 0 }))
+    );
+  }
+
+  function placeMines(excludeR: number, excludeC: number) {
+    const excluded = new Set(neighbors(excludeR, excludeC).map(([r, c]) => `${r},${c}`));
+    excluded.add(`${excludeR},${excludeC}`);
+
+    let placed = 0;
+    while (placed < MINES) {
+      const r = Math.floor(Math.random() * ROWS);
+      const c = Math.floor(Math.random() * COLS);
+      if (grid[r][c].mine || excluded.has(`${r},${c}`)) continue;
+      grid[r][c].mine = true;
+      placed++;
+    }
+
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if (grid[r][c].mine) continue;
+        grid[r][c].adjacent = neighbors(r, c).filter(([nr, nc]) => grid[nr][nc].mine).length;
+      }
+    }
+  }
+
+  function floodReveal(r: number, c: number) {
+    const stack: [number, number][] = [[r, c]];
+    while (stack.length) {
+      const [cr, cc] = stack.pop()!;
+      const cell = grid[cr][cc];
+      if (cell.revealed || cell.flagged) continue;
+      cell.revealed = true;
+      if (cell.adjacent === 0 && !cell.mine) {
+        for (const [nr, nc] of neighbors(cr, cc)) {
+          if (!grid[nr][nc].revealed && !grid[nr][nc].flagged) stack.push([nr, nc]);
+        }
+      }
+    }
+  }
+
+  function countFlags(): number {
+    let n = 0;
+    for (const row of grid) for (const cell of row) if (cell.flagged) n++;
+    return n;
+  }
+
+  function checkWin(): boolean {
+    for (const row of grid) {
+      for (const cell of row) {
+        if (!cell.mine && !cell.revealed) return false;
+      }
+    }
+    return true;
+  }
+
+  function startTimer() {
+    elapsed = 0;
+    timeEl.textContent = '0';
+    timerHandle = setInterval(() => {
+      elapsed++;
+      timeEl.textContent = String(elapsed);
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timerHandle) clearInterval(timerHandle);
+  }
+
+  function reveal(r: number, c: number) {
+    if (over) return;
+    const cell = grid[r][c];
+    if (cell.revealed || cell.flagged) return;
+
+    if (!started) {
+      started = true;
+      placeMines(r, c);
+      startTimer();
+      statusEl.textContent = '';
+    }
+
+    if (cell.mine) {
+      cell.revealed = true;
+      over = true;
+      stopTimer();
+      for (const row of grid) for (const cc of row) if (cc.mine) cc.revealed = true;
+      statusEl.textContent = 'boom — game over';
+      render();
+      return;
+    }
+
+    floodReveal(r, c);
+
+    if (checkWin()) {
+      over = true;
+      won = true;
+      stopTimer();
+      statusEl.textContent = 'you win!';
+    }
+    render();
+  }
+
+  function toggleFlag(r: number, c: number) {
+    if (over) return;
+    const cell = grid[r][c];
+    if (cell.revealed) return;
+    cell.flagged = !cell.flagged;
+    render();
+  }
+
+  function render() {
+    minesLeftEl.textContent = String(MINES - countFlags());
+    boardEl.innerHTML = '';
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const cell = grid[r][c];
+        const div = document.createElement('div');
+        if (cell.revealed) {
+          div.className = `${CELL_BASE} ${cell.mine ? CELL_MINE : CELL_REVEALED}`;
+          if (cell.mine) {
+            div.textContent = '*';
+          } else if (cell.adjacent > 0) {
+            div.textContent = String(cell.adjacent);
+          }
+        } else {
+          div.className = `${CELL_BASE} ${CELL_HIDDEN}`;
+          div.textContent = cell.flagged ? 'F' : '';
+        }
+        div.addEventListener('click', () => (flagMode ? toggleFlag(r, c) : reveal(r, c)));
+        div.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          toggleFlag(r, c);
+        });
+        boardEl.appendChild(div);
+      }
+    }
+  }
+
+  function reset() {
+    grid = emptyGrid();
+    started = false;
+    over = false;
+    won = false;
+    stopTimer();
+    elapsed = 0;
+    timeEl.textContent = '0';
+    statusEl.textContent = 'click a cell to start';
+    render();
+  }
+
+  flagModeBtn.addEventListener('click', () => {
+    flagMode = !flagMode;
+    flagModeBtn.textContent = `flag mode: ${flagMode ? 'on' : 'off'}`;
+  });
+  restartBtn.addEventListener('click', reset);
+
+  reset();
+</script>
