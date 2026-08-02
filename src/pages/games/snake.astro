@@ -17,6 +17,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       arrow keys / wasd to move &middot; swipe on mobile &middot; space to restart
     </p>
 
+    <div class="flex items-center gap-2 text-sm">
+      <span class="muted">speed:</span>
+      <button type="button" class="btn speed-btn" data-speed="slow">slow</button>
+      <button type="button" class="btn speed-btn" data-speed="normal">normal</button>
+      <button type="button" class="btn speed-btn" data-speed="fast">fast</button>
+    </div>
+
     <button type="button" id="restart" class="btn">restart</button>
   </div>
 </BaseLayout>
@@ -30,7 +37,32 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   const GRID = 20;
   const CELL = canvas.width / GRID;
-  const TICK_MS = 120;
+  const SPEEDS: Record<string, number> = { slow: 180, normal: 120, fast: 70 };
+  let speed = 'normal';
+  let tickMs = SPEEDS[speed];
+
+  const speedBtns = document.querySelectorAll<HTMLButtonElement>('.speed-btn');
+  const ACTIVE_SPEED_CLASS = 'border-[color:var(--accent)] text-[color:var(--accent)]';
+
+  function renderSpeedButtons() {
+    speedBtns.forEach((btn) => {
+      const isActive = btn.dataset.speed === speed;
+      btn.className = isActive ? `btn speed-btn ${ACTIVE_SPEED_CLASS}` : 'btn speed-btn';
+    });
+  }
+  renderSpeedButtons();
+
+  speedBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      speed = btn.dataset.speed!;
+      tickMs = SPEEDS[speed];
+      renderSpeedButtons();
+      if (alive && timer) {
+        clearInterval(timer);
+        timer = setInterval(tick, tickMs);
+      }
+    });
+  });
 
   function theme() {
     const style = getComputedStyle(document.documentElement);
@@ -76,7 +108,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     scoreEl.textContent = '0';
     food = randomFood();
     if (timer) clearInterval(timer);
-    timer = setInterval(tick, TICK_MS);
+    timer = setInterval(tick, tickMs);
     draw();
   }
 

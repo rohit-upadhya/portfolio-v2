@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Wordle" description="Guess the 5-letter word in 6 tries.">
+  <a href="/games" class="nav-link">back to games</a>
+
+  <div class="mt-6 flex flex-col items-center gap-4">
+    <div id="grid" class="grid grid-cols-5 gap-1"></div>
+
+    <p id="status" class="text-sm">type a 5-letter word and press enter</p>
+
+    <input
+      id="guess-input"
+      type="text"
+      inputmode="latin"
+      autocomplete="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      maxlength="5"
+      class="w-40 border px-2 py-1 text-center text-lg uppercase tracking-widest border-[color:var(--border)] bg-[color:var(--bg-raised)] text-[color:var(--fg)]"
+    />
+
+    <div class="flex gap-4">
+      <button type="button" id="submit-guess" class="btn">guess</button>
+      <button type="button" id="restart" class="btn">new word</button>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const WORDS = [
+    'about','above','abuse','actor','acute','admit','adopt','adult','after','again','agent','agree','ahead','alarm','album',
+    'alert','alike','alive','allow','alone','along','alter','among','anger','angle','angry','apart','apple','apply','arena',
+    'argue','arise','armor','aside','asset','avoid','awake','award','aware','badly','baker','bases','basic','basis','beach',
+    'began','begin','being','below','bench','birth','black','blame','blank','blast','blind','block','blood','board','boost',
+    'booth','bound','brain','brand','brave','bread','break','breed','brief','bring','broad','broke','brown','build','built',
+    'buyer','cable','carry','catch','cause','chain','chair','chaos','charm','chart','chase','cheap','check','chest','chief',
+    'child','chose','civil','claim','class','clean','clear','click','climb','clock','close','cloud','coach','coast','could',
+    'count','court','cover','craft','crash','crazy','cream','crime','cross','crowd','crown','crude','curve','cycle','daily',
+    'dance','dated','dealt','death','debut','delay','depth','doubt','dozen','draft','drama','drank','drawn','dream','dress',
+    'drill','drink','drive','drove','dying','eager','early','earth','eight','elite','empty','enemy','enjoy','enter','entry',
+    'equal','error','event','every','exact','exist','extra','faith','fault','fiber','field','fifth','fifty','fight','final',
+    'first','fixed','flash','fleet','floor','fluid','focus','force','forth','forty','forum','found','frame','frank','fraud',
+    'fresh','front','fruit','fully','funny','giant','given','glass','globe','going','grace','grade','grand','grant','grass',
+    'great','green','gross','group','grown','guard','guess','guest','guide','happy','harsh','heart','heavy','hence','horse',
+    'hotel','house','human','ideal','image','index','inner','input','issue','ivory','joint','judge','known','label','large',
+    'laser','later','laugh','layer','learn','lease','least','leave','legal','level','light','limit','local','logic','loose',
+    'lower','lucky','lunch','lying','magic','major','maker','march','match','maybe','mayor','meant','media','metal','might',
+    'minor','minus','mixed','model','money','month','moral','motor','mount','mouse','mouth','moved','movie','music','needs',
+    'never','newly','night','noise','north','noted','novel','nurse','occur','ocean','offer','often','order','other','ought',
+    'outer','owner','paint','panel','paper','party','peace','phase','phone','photo','piano','piece','pilot','pitch','place',
+    'plain','plane','plant','plate','point','pound','power','press','price','pride','prime','print','prior','prize','proof',
+    'proud','prove','queen','quick','quiet','quite','radio','raise','range','rapid','ratio','reach','ready','realm','rebel',
+    'refer','relax','reply','right','rival','river','robot','roman','rough','round','route','royal','rural','scale','scene',
+    'scope','score','sense','serve','seven','shall','shape','share','sharp','sheet','shelf','shell','shift','shirt','shock',
+    'shoot','short','shown','sight','since','sixth','sixty','sized','skill','sleep','slide','small','smart','smell','smile',
+    'smoke','solid','solve','sorry','sound','south','space','spare','speak','speed','spend','spent','split','spoke','sport',
+    'staff','stage','stake','stand','start','state','steam','steel','steep','stick','still','stock','stone','stood','store',
+    'storm','story','strip','stuck','study','stuff','style','sugar','suite','super','sweet','table','taken','taste','taxes',
+    'teach','teeth','theft','theme','there','these','thick','thing','think','third','those','three','threw','throw','tight',
+    'times','tired','title','today','token','topic','total','touch','tough','tower','track','trade','train','treat','trend',
+    'trial','tribe','trick','tried','tries','truck','truly','trunk','trust','truth','twice','under','union','unity','until',
+    'upper','upset','urban','usage','usual','valid','value','video','virus','visit','vital','voice','waste','watch','water',
+    'wheel','where','which','while','white','whole','whose','woman','women','world','worry','worse','worst','worth','would',
+    'wound','write','wrong','wrote','yield','young','youth',
+  ].map((w) => w.toUpperCase());
+
+  type Mark = 'green' | 'yellow' | 'gray';
+
+  const MAX_GUESSES = 6;
+  const WORD_LEN = 5;
+
+  const gridEl = document.getElementById('grid')!;
+  const statusEl = document.getElementById('status')!;
+  const input = document.getElementById('guess-input') as HTMLInputElement;
+  const submitBtn = document.getElementById('submit-guess')!;
+  const restartBtn = document.getElementById('restart')!;
+
+  const TILE_BASE = 'flex h-[48px] w-[48px] items-center justify-center border text-xl font-bold uppercase';
+  const TILE_EMPTY = 'border-[color:var(--border-dim)] bg-[color:var(--bg-raised)] text-[color:var(--fg)]';
+  const TILE_GREEN = 'border-[color:var(--accent)] bg-[color:var(--accent)] text-[color:var(--bg)]';
+  const TILE_YELLOW = 'border-[color:var(--muted)] bg-[color:var(--muted)] text-[color:var(--bg)]';
+  const TILE_GRAY = 'border-[color:var(--border-dim)] bg-[color:var(--bg)] text-[color:var(--muted)]';
+
+  let answer: string;
+  let guesses: string[];
+  let marks: (Mark[] | null)[];
+  let over: boolean;
+
+  function pickAnswer(): string {
+    return WORDS[Math.floor(Math.random() * WORDS.length)];
+  }
+
+  function evaluateGuess(guess: string, ans: string): Mark[] {
+    const result: Mark[] = Array(WORD_LEN).fill('gray');
+    const remaining: Record<string, number> = {};
+
+    for (let i = 0; i < WORD_LEN; i++) {
+      if (guess[i] === ans[i]) {
+        result[i] = 'green';
+      } else {
+        remaining[ans[i]] = (remaining[ans[i]] || 0) + 1;
+      }
+    }
+    for (let i = 0; i < WORD_LEN; i++) {
+      if (result[i] === 'green') continue;
+      const letter = guess[i];
+      if (remaining[letter] > 0) {
+        result[i] = 'yellow';
+        remaining[letter]--;
+      }
+    }
+    return result;
+  }
+
+  function tileClass(mark: Mark | undefined): string {
+    if (mark === 'green') return TILE_GREEN;
+    if (mark === 'yellow') return TILE_YELLOW;
+    if (mark === 'gray') return TILE_GRAY;
+    return TILE_EMPTY;
+  }
+
+  function render() {
+    gridEl.innerHTML = '';
+    for (let row = 0; row < MAX_GUESSES; row++) {
+      const guess = guesses[row];
+      const rowMarks = marks[row];
+      for (let col = 0; col < WORD_LEN; col++) {
+        const div = document.createElement('div');
+        div.className = `${TILE_BASE} ${tileClass(rowMarks?.[col])}`;
+        div.textContent = guess ? guess[col] : '';
+        gridEl.appendChild(div);
+      }
+    }
+  }
+
+  function submitGuess() {
+    if (over) return;
+    const guess = input.value.trim().toUpperCase();
+    if (guess.length !== WORD_LEN || !/^[A-Z]+$/.test(guess)) {
+      statusEl.textContent = 'enter a 5-letter word';
+      return;
+    }
+    if (!WORDS.includes(guess)) {
+      statusEl.textContent = 'not in word list';
+      return;
+    }
+
+    const row = guesses.findIndex((g) => g === '');
+    guesses[row] = guess;
+    marks[row] = evaluateGuess(guess, answer);
+    input.value = '';
+
+    if (guess === answer) {
+      over = true;
+      statusEl.textContent = 'you win!';
+    } else if (row === MAX_GUESSES - 1) {
+      over = true;
+      statusEl.textContent = `out of guesses — it was ${answer}`;
+    } else {
+      statusEl.textContent = `${MAX_GUESSES - row - 1} guesses left`;
+    }
+    render();
+  }
+
+  function reset() {
+    answer = pickAnswer();
+    guesses = Array(MAX_GUESSES).fill('');
+    marks = Array(MAX_GUESSES).fill(null);
+    over = false;
+    input.value = '';
+    statusEl.textContent = 'type a 5-letter word and press enter';
+    render();
+  }
+
+  submitBtn.addEventListener('click', submitGuess);
+  restartBtn.addEventListener('click', reset);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitGuess();
+  });
+  input.addEventListener('input', () => {
+    input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, WORD_LEN);
+  });
+
+  reset();
+</script>

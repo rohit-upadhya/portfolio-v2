@@ -1,0 +1,242 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Connect Four" description="Connect four against a minimax computer opponent.">
+  <a href="/games" class="nav-link">back to games</a>
+
+  <div class="mt-6 flex flex-col items-center gap-4">
+    <p id="status" class="text-lg">your turn</p>
+
+    <div id="board" class="grid grid-cols-7 gap-1"></div>
+
+    <button type="button" id="restart" class="btn">restart</button>
+  </div>
+</BaseLayout>
+
+<script>
+  type Cell = 'x' | 'o' | null;
+
+  const ROWS = 6;
+  const COLS = 7;
+  const DEPTH = 5;
+  const COLUMN_ORDER = [3, 2, 4, 1, 5, 0, 6];
+
+  const boardEl = document.getElementById('board')!;
+  const statusEl = document.getElementById('status')!;
+  const restartBtn = document.getElementById('restart')!;
+
+  const DISC_BASE = 'flex h-[36px] w-[36px] items-center justify-center rounded-full border';
+  const DISC_EMPTY = 'border-[color:var(--border-dim)] bg-[color:var(--bg-raised)]';
+  const DISC_X = 'border-[color:var(--border)] bg-[color:var(--fg)]';
+  const DISC_O = 'border-[color:var(--border)] bg-[color:var(--accent)]';
+  const DISC_WIN = 'border-2 border-[color:var(--accent)]';
+
+  let board: Cell[][];
+  let over: boolean;
+  let winLine: [number, number][] | null;
+
+  function emptyBoard(): Cell[][] {
+    return Array.from({ length: ROWS }, () => Array<Cell>(COLS).fill(null));
+  }
+
+  function validCols(b: Cell[][]): number[] {
+    return COLUMN_ORDER.filter((c) => b[0][c] === null);
+  }
+
+  function dropRow(b: Cell[][], col: number): number {
+    for (let r = ROWS - 1; r >= 0; r--) {
+      if (b[r][col] === null) return r;
+    }
+    return -1;
+  }
+
+  function lineAt(b: Cell[][], r: number, c: number, player: Cell): [number, number][] | null {
+    const dirs: [number, number][] = [
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [1, -1],
+    ];
+    for (const [dr, dc] of dirs) {
+      const cells: [number, number][] = [[r, c]];
+      let rr = r + dr;
+      let cc = c + dc;
+      while (rr >= 0 && rr < ROWS && cc >= 0 && cc < COLS && b[rr][cc] === player) {
+        cells.push([rr, cc]);
+        rr += dr;
+        cc += dc;
+      }
+      rr = r - dr;
+      cc = c - dc;
+      while (rr >= 0 && rr < ROWS && cc >= 0 && cc < COLS && b[rr][cc] === player) {
+        cells.push([rr, cc]);
+        rr -= dr;
+        cc -= dc;
+      }
+      if (cells.length >= 4) return cells;
+    }
+    return null;
+  }
+
+  function findWin(b: Cell[][]): { player: Cell; cells: [number, number][] } | null {
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const p = b[r][c];
+        if (!p) continue;
+        const line = lineAt(b, r, c, p);
+        if (line) return { player: p, cells: line };
+      }
+    }
+    return null;
+  }
+
+  function evaluateWindow(cells: Cell[], player: Cell): number {
+    const opp: Cell = player === 'o' ? 'x' : 'o';
+    const countP = cells.filter((c) => c === player).length;
+    const countO = cells.filter((c) => c === opp).length;
+    const countE = cells.filter((c) => c === null).length;
+    if (countP === 4) return 100;
+    if (countP === 3 && countE === 1) return 5;
+    if (countP === 2 && countE === 2) return 2;
+    if (countO === 3 && countE === 1) return -4;
+    return 0;
+  }
+
+  function scorePosition(b: Cell[][], player: Cell): number {
+    let score = 0;
+    const centerCol = Math.floor(COLS / 2);
+    for (let r = 0; r < ROWS; r++) if (b[r][centerCol] === player) score += 3;
+
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c <= COLS - 4; c++) {
+        score += evaluateWindow([b[r][c], b[r][c + 1], b[r][c + 2], b[r][c + 3]], player);
+      }
+    }
+    for (let c = 0; c < COLS; c++) {
+      for (let r = 0; r <= ROWS - 4; r++) {
+        score += evaluateWindow([b[r][c], b[r + 1][c], b[r + 2][c], b[r + 3][c]], player);
+      }
+    }
+    for (let r = 0; r <= ROWS - 4; r++) {
+      for (let c = 0; c <= COLS - 4; c++) {
+        score += evaluateWindow([b[r][c], b[r + 1][c + 1], b[r + 2][c + 2], b[r + 3][c + 3]], player);
+      }
+    }
+    for (let r = 3; r < ROWS; r++) {
+      for (let c = 0; c <= COLS - 4; c++) {
+        score += evaluateWindow([b[r][c], b[r - 1][c + 1], b[r - 2][c + 2], b[r - 3][c + 3]], player);
+      }
+    }
+    return score;
+  }
+
+  function minimax(b: Cell[][], depth: number, alpha: number, beta: number, maximizing: boolean): { score: number; col: number | null } {
+    const cols = validCols(b);
+    const win = findWin(b);
+    const terminal = win !== null || cols.length === 0;
+
+    if (depth === 0 || terminal) {
+      if (win?.player === 'o') return { score: 1_000_000 + depth, col: null };
+      if (win?.player === 'x') return { score: -1_000_000 - depth, col: null };
+      if (cols.length === 0) return { score: 0, col: null };
+      return { score: scorePosition(b, 'o'), col: null };
+    }
+
+    if (maximizing) {
+      let value = -Infinity;
+      let bestCol = cols[0];
+      for (const col of cols) {
+        const row = dropRow(b, col);
+        b[row][col] = 'o';
+        const { score } = minimax(b, depth - 1, alpha, beta, false);
+        b[row][col] = null;
+        if (score > value) {
+          value = score;
+          bestCol = col;
+        }
+        alpha = Math.max(alpha, value);
+        if (alpha >= beta) break;
+      }
+      return { score: value, col: bestCol };
+    } else {
+      let value = Infinity;
+      let bestCol = cols[0];
+      for (const col of cols) {
+        const row = dropRow(b, col);
+        b[row][col] = 'x';
+        const { score } = minimax(b, depth - 1, alpha, beta, true);
+        b[row][col] = null;
+        if (score < value) {
+          value = score;
+          bestCol = col;
+        }
+        beta = Math.min(beta, value);
+        if (alpha >= beta) break;
+      }
+      return { score: value, col: bestCol };
+    }
+  }
+
+  function computerMove() {
+    const { col } = minimax(board, DEPTH, -Infinity, Infinity, true);
+    if (col === null) return;
+    const row = dropRow(board, col);
+    board[row][col] = 'o';
+  }
+
+  function render() {
+    const win = findWin(board);
+    winLine = win?.cells ?? null;
+    boardEl.innerHTML = '';
+    for (let c = 0; c < COLS; c++) {
+      const colEl = document.createElement('div');
+      colEl.className = 'flex cursor-pointer flex-col gap-1';
+      for (let r = 0; r < ROWS; r++) {
+        const cell = board[r][c];
+        const isWin = !!winLine?.some(([wr, wc]) => wr === r && wc === c);
+        const div = document.createElement('div');
+        const colorClass = cell === 'x' ? DISC_X : cell === 'o' ? DISC_O : DISC_EMPTY;
+        div.className = `${DISC_BASE} ${colorClass} ${isWin ? DISC_WIN : ''}`;
+        colEl.appendChild(div);
+      }
+      colEl.addEventListener('click', () => play(c));
+      boardEl.appendChild(colEl);
+    }
+
+    if (win?.player === 'x') {
+      statusEl.textContent = 'you win!';
+      over = true;
+    } else if (win?.player === 'o') {
+      statusEl.textContent = 'computer wins';
+      over = true;
+    } else if (validCols(board).length === 0) {
+      statusEl.textContent = "it's a draw";
+      over = true;
+    } else {
+      statusEl.textContent = over ? statusEl.textContent : 'your turn';
+    }
+  }
+
+  function play(col: number) {
+    if (over) return;
+    const row = dropRow(board, col);
+    if (row === -1) return;
+    board[row][col] = 'x';
+
+    if (!findWin(board) && validCols(board).length > 0) {
+      computerMove();
+    }
+    render();
+  }
+
+  function reset() {
+    board = emptyBoard();
+    over = false;
+    winLine = null;
+    render();
+  }
+
+  restartBtn.addEventListener('click', reset);
+  reset();
+</script>
