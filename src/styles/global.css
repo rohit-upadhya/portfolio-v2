@@ -132,11 +132,11 @@ button.nav-link {
   cursor: pointer;
 }
 .nav-link::before {
-  content: "[ ";
+  content: "[";
   color: var(--border);
 }
 .nav-link::after {
-  content: " ]";
+  content: "]";
   color: var(--border);
 }
 .nav-link:hover {

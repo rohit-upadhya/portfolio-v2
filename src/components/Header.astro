@@ -70,10 +70,12 @@ function isActive(href: string) {
     function otherTheme() {
       return document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     }
+    var GLYPH = { light: '*', dark: ')' };
     function render() {
-      var label = otherTheme();
+      var target = otherTheme();
       document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-        btn.textContent = label;
+        btn.textContent = GLYPH[target];
+        btn.title = 'switch to ' + target + ' theme';
       });
     }
     render();
