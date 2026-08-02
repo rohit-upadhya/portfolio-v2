@@ -44,6 +44,7 @@ function isActive(href: string) {
           {link.label}
         </a>
       ))}
+      <button type="button" class="nav-link theme-toggle" aria-label="Toggle color theme"></button>
     </nav>
 
     <nav
@@ -58,6 +59,30 @@ function isActive(href: string) {
           {link.label}
         </a>
       ))}
+      <button type="button" class="nav-link theme-toggle text-left" aria-label="Toggle color theme"></button>
     </nav>
   </div>
 </header>
+
+<script is:inline>
+  (function () {
+    function otherTheme() {
+      return document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    }
+    function render() {
+      var label = otherTheme();
+      document.querySelectorAll('.theme-toggle').forEach(function (btn) {
+        btn.textContent = label;
+      });
+    }
+    render();
+    document.querySelectorAll('.theme-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = otherTheme();
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        render();
+      });
+    });
+  })();
+</script>

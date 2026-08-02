@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root {
+:root,
+:root[data-theme="dark"] {
   --bg: #111111;
   --bg-raised: #171717;
   --fg: #e4e4e0;
@@ -10,6 +11,21 @@
   --border-dim: rgba(255, 255, 255, 0.07);
 
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f5f1;
+  --bg-raised: #ffffff;
+  --fg: #1c1c1a;
+  --accent: #55554f;
+  --muted: #6b6b65;
+  --border: rgba(0, 0, 0, 0.14);
+  --border-dim: rgba(0, 0, 0, 0.08);
+
+  color-scheme: light;
+}
+
+:root {
   font-family: ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas,
     "Liberation Mono", monospace;
 }
@@ -30,6 +46,13 @@ body {
   line-height: 1.6;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 a {
@@ -99,6 +122,14 @@ pre {
 .nav-link {
   color: var(--muted);
   white-space: nowrap;
+}
+button.nav-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
 }
 .nav-link::before {
   content: "[ ";
