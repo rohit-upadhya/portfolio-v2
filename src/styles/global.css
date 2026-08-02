@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #111210;
-  --bg-raised: #16170f;
+  --bg: #111111;
+  --bg-raised: #171717;
   --fg: #e4e4e0;
-  --accent: #8fae91;
+  --accent: #c7c7c0;
   --muted: #8a8a84;
   --border: rgba(255, 255, 255, 0.12);
   --border-dim: rgba(255, 255, 255, 0.07);
@@ -43,7 +43,7 @@ a:hover {
 
 ::selection {
   background: var(--accent);
-  color: #111210;
+  color: var(--bg);
 }
 
 h1,
