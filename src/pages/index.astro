@@ -18,34 +18,6 @@ import { education, workExperience, skills } from '../data/experience';
 
   <hr />
 
-  <section class="flex flex-col gap-4">
-    <h2 class="text-2xl font-bold">skills</h2>
-    <div class="card flex flex-col gap-2">
-      {skills.map((group) => (
-        <p class="text-sm">
-          <span class="font-bold">{group.label}:</span> <span class="muted">{group.items.join(', ')}</span>
-        </p>
-      ))}
-    </div>
-  </section>
-
-  <hr />
-
-  <section class="flex flex-col gap-6">
-    <h2 class="text-2xl font-bold">education</h2>
-    <div class="grid gap-4 sm:grid-cols-2">
-      {education.map((entry) => (
-        <a href={entry.href} target="_blank" rel="noopener noreferrer" class="card flex flex-col gap-2">
-          <h3 class="font-bold">{entry.degree}</h3>
-          <p class="muted">{entry.school}</p>
-          <p class="muted text-sm">{entry.period}</p>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <hr />
-
   <section class="flex flex-col gap-6">
     <h2 class="text-2xl font-bold">work experience</h2>
     <div class="flex flex-col gap-4">
@@ -68,6 +40,34 @@ import { education, workExperience, skills } from '../data/experience';
           </Tag>
         );
       })}
+    </div>
+  </section>
+
+  <hr />
+
+  <section class="flex flex-col gap-6">
+    <h2 class="text-2xl font-bold">education</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {education.map((entry) => (
+        <a href={entry.href} target="_blank" rel="noopener noreferrer" class="card flex flex-col gap-2">
+          <h3 class="font-bold">{entry.degree}</h3>
+          <p class="muted">{entry.school}</p>
+          <p class="muted text-sm">{entry.period}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <hr />
+
+  <section class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">skills</h2>
+    <div class="card flex flex-col gap-2">
+      {skills.map((group) => (
+        <p class="text-sm">
+          <span class="font-bold">{group.label}:</span> <span class="muted">{group.items.join(', ')}</span>
+        </p>
+      ))}
     </div>
   </section>
 </BaseLayout>
