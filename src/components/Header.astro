@@ -1,0 +1,75 @@
+---
+const navLinks = [
+  { href: '/', label: 'home' },
+  { href: '/blog', label: 'blog' },
+  { href: '/research', label: 'research' },
+];
+
+const legacyLink = { href: 'https://rohit-upadhya.github.io/portfolio/', label: 'site v1' };
+
+const socialLinks = [
+  { href: 'https://github.com/rohit-upadhya', label: 'gh' },
+  { href: 'https://www.linkedin.com/in/rohit-upadhya/', label: 'in' },
+  { href: 'https://huggingface.co/rohit-upadhya', label: 'hf' },
+  { href: 'https://www.kaggle.com/rohitupadhya', label: 'kg' },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  return href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-[color:var(--border-dim)] bg-[color:var(--bg)]/95 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <input type="checkbox" id="nav-toggle" class="peer hidden" />
+
+    <div class="flex items-center gap-4">
+      <label for="nav-toggle" class="cursor-pointer select-none sm:hidden" aria-label="Toggle menu">
+        [ menu ]
+      </label>
+
+      <nav class="hidden items-center gap-4 sm:flex">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="bracket-link"
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            style={isActive(link.href) ? 'color: var(--accent);' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+        <a href={legacyLink.href} target="_blank" rel="noopener noreferrer" class="bracket-link muted">
+          {legacyLink.label}
+        </a>
+      </nav>
+    </div>
+
+    <nav class="hidden items-center gap-4 text-sm sm:flex">
+      {socialLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class="bracket-link">
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <nav
+      class="absolute inset-x-0 top-full hidden flex-col gap-3 border-b border-[color:var(--border-dim)] bg-[color:var(--bg)] px-4 py-4 peer-checked:flex sm:hidden"
+    >
+      {navLinks.map((link) => (
+        <a href={link.href} class="bracket-link">{link.label}</a>
+      ))}
+      <a href={legacyLink.href} target="_blank" rel="noopener noreferrer" class="bracket-link muted">
+        {legacyLink.label}
+      </a>
+      <hr class="my-1" />
+      {socialLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class="bracket-link">
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,26 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[color:var(--border-dim)]">
+  <div class="mx-auto flex max-w-3xl flex-col gap-2 px-4 py-6 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <p class="muted">
+      &copy; {year} Rohit Upadhya &middot;
+      <a
+        href="https://drive.google.com/file/d/17bwS1VmSJYb_JDFsRXHSAKFFO3gTP3-8/view"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ml-1"
+      >
+        resume
+      </a>
+      &middot;
+      <a href="mailto:rohitupadhya18@gmail.com" class="ml-1">contact</a>
+    </p>
+    <p class="muted">
+      built with <a href="https://astro.build/" target="_blank" rel="noopener noreferrer">astro</a> +
+      <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer">tailwind</a>,
+      deployed on <a href="https://vercel.com/" target="_blank" rel="noopener noreferrer">vercel</a>
+    </p>
+  </div>
+</footer>

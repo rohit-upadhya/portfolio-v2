@@ -1,0 +1,30 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Rohit Upadhya — AI/ML engineer, ex-TUM. Notes on LLMs, NLP, and legal tech." } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title} · Rohit Upadhya</title>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header />
+    <main class="mx-auto w-full max-w-3xl flex-grow px-4 py-10 sm:px-6">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
