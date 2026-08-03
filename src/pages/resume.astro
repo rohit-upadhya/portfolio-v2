@@ -185,18 +185,17 @@ import { contact, workExperience, publications, education, skills, projects } fr
 
 <script>
   const downloadBtn = document.getElementById('download-btn')!;
-  const chrome = [document.querySelector('header'), document.querySelector('footer')].filter(
-    (el): el is HTMLElement => el !== null
-  );
+
+  function chromeElements(): HTMLElement[] {
+    return Array.from(document.querySelectorAll<HTMLElement>('header, footer, .no-print'));
+  }
 
   function hideChrome() {
-    chrome.forEach((el) => el.setAttribute('style', 'display:none !important'));
-    downloadBtn.setAttribute('style', 'display:none !important');
+    chromeElements().forEach((el) => el.setAttribute('style', 'display:none !important'));
   }
 
   function showChrome() {
-    chrome.forEach((el) => el.removeAttribute('style'));
-    downloadBtn.removeAttribute('style');
+    chromeElements().forEach((el) => el.removeAttribute('style'));
   }
 
   downloadBtn.addEventListener('click', () => {
