@@ -32,7 +32,7 @@ const isHome = Astro.url.pathname === '/';
     <Header />
     <main class="mx-auto w-full max-w-4xl flex-grow px-4 py-10 sm:px-6">
       {!isHome && (
-        <a href="/" class="nav-link mb-6 inline-block">
+        <a href="/" class="nav-link no-print mb-6 inline-block sm:hidden">
           &lt;- home
         </a>
       )}
