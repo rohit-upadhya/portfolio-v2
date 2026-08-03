@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, workExperience, publications, education, skills, projects } from '../data/resume';
+---
+
+<BaseLayout title="Resume" description="Rohit Upadhya's resume.">
+  <div class="mb-6 flex items-center justify-between">
+    <a href="/" class="nav-link">back home</a>
+    <button type="button" id="download-btn" class="btn no-print">download (pdf)</button>
+  </div>
+
+  <article id="resume" class="resume mx-auto max-w-2xl">
+    <header class="resume-header">
+      <h1>{contact.name}</h1>
+      <p class="contact-line">
+        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> |
+        <a href={contact.github} target="_blank" rel="noopener noreferrer">Github</a> |
+        <a href={contact.portfolio} target="_blank" rel="noopener noreferrer">Portfolio</a> |
+        {contact.phone} |
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </p>
+    </header>
+
+    <section>
+      <h2>Work Experience</h2>
+      {workExperience.map((role) => (
+        <div class="entry">
+          <div class="entry-row">
+            <span class="entry-title">{role.title}</span>
+            <span class="entry-meta">{role.location}</span>
+          </div>
+          <div class="entry-row">
+            <span class="entry-subtitle">{role.org}</span>
+            <span class="entry-meta">{role.period}</span>
+          </div>
+          <ul>
+            {role.bullets.map((b) => <li>{b}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Publications</h2>
+      {publications.map((pub) => (
+        <div class="entry">
+          <div class="entry-row">
+            <span class="entry-title">
+              {pub.authors} <em>{pub.citation}</em>
+            </span>
+            <span class="entry-meta">{pub.venue}</span>
+          </div>
+          <p class="entry-desc">{pub.description}</p>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      {education.map((edu) => (
+        <div class="entry">
+          <div class="entry-row">
+            <span class="entry-title">{edu.school}</span>
+            <span class="entry-meta">{edu.location}</span>
+          </div>
+          <div class="entry-row">
+            <span class="entry-subtitle">{edu.degree}</span>
+            <span class="entry-meta">{edu.period}</span>
+          </div>
+          <ul>
+            {edu.bullets.map((b) => <li>{b}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <p class="skills-block">
+        {skills.map((group) => (
+          <>
+            <strong>{group.label}:</strong> {group.items.join(', ')}
+            <br />
+          </>
+        ))}
+      </p>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      {projects.map((project) => (
+        <div class="entry">
+          <div class="entry-row">
+            <span class="entry-title">{project.title}</span>
+          </div>
+          <p class="entry-desc links-line">
+            {project.links.map((link, i) => (
+              <>
+                {i > 0 && ', '}
+                <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+              </>
+            ))}
+          </p>
+          <ul>
+            {project.bullets.map((b) => <li>{b}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .resume {
+    color: var(--fg);
+    line-height: 1.5;
+  }
+  .resume-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .resume-header h1 {
+    font-size: 1.75rem;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem;
+  }
+  .contact-line {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .contact-line a {
+    color: var(--fg);
+  }
+  .resume section {
+    margin-top: 1.5rem;
+  }
+  .resume h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .entry {
+    margin-bottom: 1rem;
+  }
+  .entry-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .entry-title {
+    font-weight: 700;
+  }
+  .entry-subtitle {
+    font-style: italic;
+  }
+  .entry-meta {
+    color: var(--muted);
+    white-space: nowrap;
+    font-size: 0.85rem;
+  }
+  .entry-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.25rem 0 0;
+  }
+  .links-line a {
+    color: var(--fg);
+  }
+  .resume ul {
+    margin: 0.35rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .resume li {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+  .skills-block {
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+</style>
+
+<script>
+  document.getElementById('download-btn')!.addEventListener('click', () => window.print());
+</script>

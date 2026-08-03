@@ -30,6 +30,31 @@
     "Liberation Mono", monospace;
 }
 
+/* printing (and PDF download via window.print()) always renders light,
+   regardless of the active theme, and drops all site chrome */
+@media print {
+  :root {
+    --bg: #ffffff !important;
+    --bg-raised: #ffffff !important;
+    --fg: #000000 !important;
+    --accent: #000000 !important;
+    --muted: #444444 !important;
+    --border: #999999 !important;
+    --border-dim: #cccccc !important;
+    color-scheme: light !important;
+  }
+
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  @page {
+    margin: 0.6in;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
