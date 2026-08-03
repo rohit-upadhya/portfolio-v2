@@ -74,18 +74,6 @@ import { contact, workExperience, publications, education, skills, projects } fr
     </section>
 
     <section>
-      <h2>Skills</h2>
-      <p class="skills-block">
-        {skills.map((group) => (
-          <>
-            <strong>{group.label}:</strong> {group.items.join(', ')}
-            <br />
-          </>
-        ))}
-      </p>
-    </section>
-
-    <section>
       <h2>Projects</h2>
       {projects.map((project) => (
         <div class="entry">
@@ -105,6 +93,18 @@ import { contact, workExperience, publications, education, skills, projects } fr
           </ul>
         </div>
       ))}
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <p class="skills-block">
+        {skills.map((group) => (
+          <>
+            <strong>{group.label}:</strong> {group.items.join(', ')}
+            <br />
+          </>
+        ))}
+      </p>
     </section>
   </article>
 </BaseLayout>
