@@ -1,10 +1,3 @@
-export interface Education {
-  degree: string;
-  school: string;
-  href: string;
-  period: string;
-}
-
 export interface Role {
   title: string;
   org: string;
@@ -13,21 +6,6 @@ export interface Role {
   location: string;
   bullets: string[];
 }
-
-export const education: Education[] = [
-  {
-    degree: 'M.Sc. in Computer Science',
-    school: 'Technical University of Munich',
-    href: 'https://www.tum.de/en',
-    period: 'October 2022 – February 2025',
-  },
-  {
-    degree: 'B.Tech. in Computer Science and Engineering',
-    school: 'National Institute of Technology Silchar',
-    href: 'https://www.nits.ac.in/',
-    period: 'August 2015 – May 2019',
-  },
-];
 
 export const workExperience: Role[] = [
   {
