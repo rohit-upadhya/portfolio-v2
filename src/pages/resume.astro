@@ -4,8 +4,7 @@ import { contact, workExperience, publications, education, skills, projects } fr
 ---
 
 <BaseLayout title="Resume" description="Rohit Upadhya's resume.">
-  <div class="mb-6 flex items-center justify-between">
-    <a href="/" class="nav-link">back home</a>
+  <div class="mb-6 flex justify-end">
     <button type="button" id="download-btn" class="btn no-print">download (pdf)</button>
   </div>
 
@@ -185,5 +184,24 @@ import { contact, workExperience, publications, education, skills, projects } fr
 </style>
 
 <script>
-  document.getElementById('download-btn')!.addEventListener('click', () => window.print());
+  const downloadBtn = document.getElementById('download-btn')!;
+  const chrome = [document.querySelector('header'), document.querySelector('footer')].filter(
+    (el): el is HTMLElement => el !== null
+  );
+
+  function hideChrome() {
+    chrome.forEach((el) => el.setAttribute('style', 'display:none !important'));
+    downloadBtn.setAttribute('style', 'display:none !important');
+  }
+
+  function showChrome() {
+    chrome.forEach((el) => el.removeAttribute('style'));
+    downloadBtn.removeAttribute('style');
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    hideChrome();
+    window.print();
+  });
+  window.addEventListener('afterprint', showChrome);
 </script>
