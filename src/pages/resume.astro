@@ -9,7 +9,7 @@ import { contact, workExperience, publications, education, skills, projects } fr
   </div>
 
   <article id="resume" class="resume mx-auto max-w-2xl">
-    <header class="resume-header">
+    <div class="resume-header">
       <h1>{contact.name}</h1>
       <p class="contact-line">
         <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a> |
@@ -18,7 +18,7 @@ import { contact, workExperience, publications, education, skills, projects } fr
         {contact.phone} |
         <a href={`mailto:${contact.email}`}>{contact.email}</a>
       </p>
-    </header>
+    </div>
 
     <section>
       <h2>Work Experience</h2>
