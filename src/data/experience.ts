@@ -104,37 +104,3 @@ export const workExperience: Role[] = [
     ],
   },
 ];
-
-export interface SkillGroup {
-  label: string;
-  items: string[];
-}
-
-export const skills: SkillGroup[] = [
-  { label: 'languages', items: ['Python', 'JavaScript', 'SQL', 'Shell'] },
-  {
-    label: 'llms & agents',
-    items: [
-      'RAG',
-      'Computer Use Agents (CUA)',
-      'Agent Evaluation & Benchmarking',
-      'PEFT/LoRA Fine-tuning',
-      'Instruction Tuning',
-      'Prompt Engineering',
-      'Cross-Encoders',
-      'Contrastive Learning',
-    ],
-  },
-  {
-    label: 'ml frameworks',
-    items: ['PyTorch', 'HuggingFace (Transformers, PEFT, Datasets)', 'PyTorch Geometric'],
-  },
-  {
-    label: 'retrieval & data',
-    items: ['FAISS', 'Azure AI Search', 'Elasticsearch', 'Weaviate', 'Cosmos DB', 'Kafka'],
-  },
-  {
-    label: 'infra & devops',
-    items: ['Azure (ML, Functions, OpenAI)', 'Docker', 'GitHub Actions', 'CI/CD', 'Linux', 'AWS S3'],
-  },
-];
