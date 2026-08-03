@@ -1,12 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { workExperience } from '../data/experience';
-import { getCollection } from 'astro:content';
-
-const currentRole = workExperience[0];
-const featuredProjects = (await getCollection('projects'))
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 2);
+import { education, workExperience } from '../data/experience';
 ---
 
 <BaseLayout title="Home">
@@ -16,29 +10,43 @@ const featuredProjects = (await getCollection('projects'))
       Hi, I'm Rohit &mdash; a computer science graduate passionate about AI, machine learning, NLP,
       and open-source. I enjoy solving real-world problems with code and sharing what I learn.
     </p>
-    <p class="text-sm muted">
-      Currently {currentRole.title} at {currentRole.org}, {currentRole.location}.
-      <a href="/resume">full resume &rarr;</a>
-    </p>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="flex gap-4">
       <a href="/blog" class="btn">view blog</a>
       <a href="/research" class="btn">see research</a>
-      <a href="/projects" class="btn">see projects</a>
     </div>
   </section>
 
   <hr />
 
   <section class="flex flex-col gap-6">
-    <h2 class="text-2xl font-bold">featured projects</h2>
-    <div class="flex flex-col gap-4">
-      {featuredProjects.map((project) => (
-        <a href={`/projects/${project.id}`} class="card flex flex-col gap-2">
-          <h3 class="font-bold">{project.data.title}</h3>
-          <p class="text-sm muted">{project.data.description}</p>
-        </a>
+    <h2 class="text-2xl font-bold">education</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {education.map((entry) => (
+        <div class="card flex flex-col gap-2">
+          <h3 class="font-bold">{entry.degree}</h3>
+          <p class="muted">{entry.school}</p>
+          <p class="muted text-sm">{entry.period}</p>
+        </div>
       ))}
     </div>
-    <a href="/projects" class="nav-link self-center">see all projects</a>
+  </section>
+
+  <hr />
+
+  <section class="flex flex-col gap-6">
+    <h2 class="text-2xl font-bold">work experience</h2>
+    <div class="flex flex-col gap-4">
+      {workExperience.map((role) => (
+        <div class="card flex flex-col gap-2">
+          <h3 class="font-bold">{role.title}</h3>
+          <p class="muted text-sm italic">
+            {role.org} &middot; {role.period} &middot; {role.location}
+          </p>
+          <ul class="list-inside list-disc space-y-1 text-sm">
+            {role.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
   </section>
 </BaseLayout>

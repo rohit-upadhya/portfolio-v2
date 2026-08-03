@@ -1,3 +1,10 @@
+export interface Education {
+  degree: string;
+  school: string;
+  href: string;
+  period: string;
+}
+
 export interface Role {
   title: string;
   org: string;
@@ -7,6 +14,21 @@ export interface Role {
   bullets: string[];
 }
 
+export const education: Education[] = [
+  {
+    degree: 'M.Sc. in Computer Science',
+    school: 'Technical University of Munich',
+    href: 'https://www.tum.de/en',
+    period: 'October 2022 – February 2025',
+  },
+  {
+    degree: 'B.Tech. in Computer Science and Engineering',
+    school: 'National Institute of Technology Silchar',
+    href: 'https://www.nits.ac.in/',
+    period: 'August 2015 – May 2019',
+  },
+];
+
 export const workExperience: Role[] = [
   {
     title: 'Software Engineer - ML',
@@ -15,10 +37,10 @@ export const workExperience: Role[] = [
     period: 'January 2026 – Present',
     location: 'Bangalore, India',
     bullets: [
-      'Designed the evaluation framework for a production Computer Use Agent — run telemetry, failure taxonomy, and error attribution driving prompt and architecture iteration; 62% autonomous task completion across 800+ real-world sites.',
-      'Built a benchmarking framework comparing Gemini against the incumbent Claude-based agent on task accuracy and latency, driving model selection for enterprise deployments.',
-      'Found the dominant failure category conflated environment limits with recoverable agent errors; recategorizing separated true blockers from fixable behavior and redirected improvement effort.',
-      'Architected an end-to-end Sales Ops automation integrating a CUA with event-driven Power Automate pipelines triggered by incoming emails; cut deal processing time by 30 min/sale (~180 min/week).',
+      'Designed the evaluation framework for a production Computer Use Agent — telemetry, failure taxonomy, error attribution; 62% autonomous task completion across 800+ sites.',
+      'Built a benchmarking framework comparing Gemini vs. the incumbent Claude-based agent, driving model selection for enterprise deployments.',
+      'Found the top failure category conflated environment limits with recoverable errors; recategorizing separated true blockers from fixable behavior.',
+      'Architected an end-to-end Sales Ops automation combining a CUA with event-driven Power Automate pipelines; cut deal processing time by ~180 min/week.',
     ],
   },
   {
@@ -28,9 +50,9 @@ export const workExperience: Role[] = [
     period: 'May 2025 – January 2026',
     location: 'Remote, India',
     bullets: [
-      'Fine-tuned embedding models for domain-specific semantic retrieval, improving recall@1 from ~40% to 85%+ over off-the-shelf embeddings.',
-      'Architected and deployed a containerized Azure RAG pipeline (Azure OpenAI, Azure AI Search, Cosmos DB, Docker, GitHub Actions) with dynamic query routing, continuously ingesting Confluence pages to serve low-latency, context-aware answers to enterprise users.',
-      'Designed a semantic matching pipeline using cross-encoder rerankers, improving client match rate by 20% over baseline and replacing manual matching, thereby eliminating 8+ hours of weekly manual work.',
+      'Fine-tuned embedding models for domain-specific retrieval, boosting recall@1 from ~40% to 85%+.',
+      'Deployed a containerized Azure RAG pipeline (OpenAI, AI Search, Cosmos DB, Docker, GitHub Actions) with dynamic query routing over continuously ingested Confluence pages.',
+      'Built a cross-encoder reranking pipeline that replaced manual client matching — 20% better match rate, 8+ hours saved weekly.',
     ],
   },
   {
@@ -40,10 +62,10 @@ export const workExperience: Role[] = [
     period: 'October 2023 – January 2025',
     location: 'Munich, Germany',
     bullets: [
-      'Developed a quiz generator app leveraging PEFT fine-tuned LLaMA and Mistral models, reducing manual workload by over 80%.',
-      'Designed a relation extraction module using GPT-4 & fine-tuned LLaMA models, with a Streamlit UI for testing and demos; structured 12,000+ support interactions to improve response accuracy and speed.',
-      'Architected and engineered an automated tutorial generator using YOLO-based UI detection, Azure TTS/STT, OpenAI APIs, streamlining content creation for onboarding and training.',
-      'Ran Agile sprints and translated technical plans for cross-functional teams, aligning roadmap goals across engineering and non-technical stakeholders.',
+      'Built a quiz generator using PEFT fine-tuned LLaMA/Mistral models, cutting manual workload by 80%+.',
+      'Built a relation extraction module (GPT-4 + fine-tuned LLaMA) with a Streamlit demo UI; structured 12,000+ support interactions.',
+      'Built an automated tutorial generator (YOLO UI detection, Azure TTS/STT, OpenAI APIs) for onboarding content creation.',
+      'Ran Agile sprints, aligning roadmap goals across engineering and non-technical stakeholders.',
     ],
   },
   {
@@ -53,8 +75,8 @@ export const workExperience: Role[] = [
     period: 'October 2023 – May 2024',
     location: 'Munich, Germany',
     bullets: [
-      'Built a defect clustering pipeline for BMW, reducing manual triage workload by 60% and improving turnaround time for engineering teams.',
-      'Rebuilt a legacy MS Access tool as a scalable Django-based web app for Bosch, enabling multi-user access and reducing maintenance overhead.',
+      'Built a defect-clustering pipeline for BMW, cutting manual triage workload by 60%.',
+      'Rebuilt a legacy MS Access tool as a Django web app for Bosch, adding multi-user access.',
     ],
   },
   {
@@ -64,10 +86,10 @@ export const workExperience: Role[] = [
     period: 'July 2019 – July 2022',
     location: 'Bangalore, India',
     bullets: [
-      'Led development of REST APIs to automate CMDB updates and incident workflows, improving operational efficiency across 30+ engineering teams.',
-      'Built a real-time incident dashboard for Major Incident Managing teams, reducing incident response time and increasing visibility for P1 outages.',
-      'Served as SME for Clarity PPM across 100+ projects, streamlining governance and ensuring consistent project reporting.',
-      'Replaced premium analytics tools with ElasticSearch/Kibana, saving $15K+ quarterly and enhancing ticket trend visibility.',
+      'Led REST API development to automate CMDB updates and incident workflows across 30+ engineering teams.',
+      'Built a real-time incident dashboard for Major Incident teams, speeding up P1 response.',
+      'Served as SME for Clarity PPM across 100+ projects, standardizing governance and reporting.',
+      'Replaced premium analytics tools with ElasticSearch/Kibana, saving $15K+ quarterly.',
     ],
   },
   {
@@ -77,8 +99,8 @@ export const workExperience: Role[] = [
     period: 'May 2018 – June 2018',
     location: 'Bangalore, India',
     bullets: [
-      'Coded image classification models using CNNs and Open-CV for various imaging datasets.',
-      'Developed a secure registration portal with role-based access control for an NGO, enabling streamlined user onboarding for community services.',
+      'Coded image classification models using CNNs and OpenCV for various imaging datasets.',
+      'Built a secure registration portal with role-based access control for an NGO.',
     ],
   },
 ];
