@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { education, workExperience } from '../data/experience';
+---
+
+<BaseLayout title="About" description="Education and work experience.">
+  <section class="flex flex-col gap-6">
+    <h2 class="text-2xl font-bold">education</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {education.map((entry) => (
+        <div class="card flex flex-col gap-2">
+          <h3 class="font-bold">{entry.degree}</h3>
+          <p class="muted">{entry.school}</p>
+          <p class="muted text-sm">{entry.period}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <hr />
+
+  <section class="flex flex-col gap-6">
+    <h2 class="text-2xl font-bold">work experience</h2>
+    <div class="flex flex-col gap-4">
+      {workExperience.map((role) => (
+        <div class="card flex flex-col gap-2">
+          <h3 class="font-bold">{role.title}</h3>
+          <p class="muted text-sm italic">
+            {role.org} &middot; {role.period} &middot; {role.location}
+          </p>
+          <ul class="list-inside list-disc space-y-1 text-sm">
+            {role.bullets.map((bullet) => <li>{bullet}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
