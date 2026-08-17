@@ -1,5 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const research = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+
+const featured = [
+  { kind: 'research' as const, item: research[0] },
+  { kind: 'project' as const, item: projects[0] },
+  { kind: 'project' as const, item: projects[1] },
+].filter((f) => f.item);
 ---
 
 <BaseLayout title="Home">
@@ -13,6 +23,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <a href="/about" class="btn">about me</a>
       <a href="/blog" class="btn">view blog</a>
       <a href="/research" class="btn">see research</a>
+    </div>
+  </section>
+
+  <hr />
+
+  <section class="flex flex-col gap-6">
+    <div class="flex items-baseline justify-between">
+      <h2 class="text-2xl font-bold">featured</h2>
+      <div class="flex gap-4">
+        <a href="/projects" class="nav-link text-sm">projects</a>
+        <a href="/research" class="nav-link text-sm">research</a>
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {featured.map(({ kind, item }) => (
+        <div class="card flex flex-col gap-2">
+          {kind === 'research' && item.data.kind && (
+            <p class="muted text-xs uppercase tracking-wide">{item.data.kind}</p>
+          )}
+          <h3 class="font-bold">{item.data.title}</h3>
+          <p class="muted text-sm">{item.data.description}</p>
+          <a href={`/${kind === 'research' ? 'research' : 'projects'}/${item.id}`} class="nav-link text-sm">
+            read more
+          </a>
+        </div>
+      ))}
     </div>
   </section>
 </BaseLayout>
