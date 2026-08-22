@@ -14,8 +14,9 @@ const examples = [
     <span class="muted text-xs whitespace-nowrap">109M params &middot; CPU</span>
   </div>
   <p class="muted text-sm">
-    Ask the instruct checkpoint something. It's tiny, so expect fluent-sounding but often
-    unreliable answers — and a slow first response if the box was asleep.
+    Ask the instruct checkpoint something. It's a 109M-param model running on a free-tier CPU
+    box, so answers can be fluent-sounding but wildly wrong, and generation is slow — even more so
+    on the first request if the box was asleep.
   </p>
 
   {apiUrl ? (
@@ -69,6 +70,13 @@ const examples = [
     }
     promptEl.addEventListener('input', sizeInput);
     sizeInput();
+
+    bodyEl.addEventListener('click', () => {
+      if (form.classList.contains('hidden')) return;
+      const selection = window.getSelection();
+      if (selection && selection.toString().length > 0) return;
+      promptEl.focus();
+    });
 
     const history = [];
     let historyIndex = -1;
