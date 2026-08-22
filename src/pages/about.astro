@@ -1,38 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { education, workExperience } from '../data/experience';
 ---
 
-<BaseLayout title="About" description="Education and work experience.">
-  <section class="flex flex-col gap-6">
-    <h2 class="text-2xl font-bold">education</h2>
-    <div class="grid gap-4 sm:grid-cols-2">
-      {education.map((entry) => (
-        <div class="card flex flex-col gap-2">
-          <h3 class="font-bold">{entry.degree}</h3>
-          <p class="muted">{entry.school}</p>
-          <p class="muted text-sm">{entry.period}</p>
-        </div>
-      ))}
-    </div>
-  </section>
+<BaseLayout title="About" description="A bit about me outside of work.">
+  <h1 class="mb-6 text-2xl font-bold">about</h1>
 
-  <hr />
+  <div class="flex flex-col gap-8 sm:flex-row sm:gap-10">
+    <img
+      src="/rohit.jpg"
+      alt="Rohit Upadhya"
+      width="900"
+      height="973"
+      loading="lazy"
+      class="w-full max-w-[220px] self-center border border-[color:var(--border-dim)] sm:self-start"
+    />
 
-  <section class="flex flex-col gap-6">
-    <h2 class="text-2xl font-bold">work experience</h2>
-    <div class="flex flex-col gap-4">
-      {workExperience.map((role) => (
-        <div class="card flex flex-col gap-2">
-          <h3 class="font-bold">{role.title}</h3>
-          <p class="muted text-sm italic">
-            {role.org} &middot; {role.period} &middot; {role.location}
-          </p>
-          <ul class="list-inside list-disc space-y-1 text-sm">
-            {role.bullets.map((bullet) => <li>{bullet}</li>)}
-          </ul>
-        </div>
-      ))}
+    <div class="prose-content max-w-2xl">
+      <p>
+        A few things I'm into outside of work — the work itself is over on my
+        <a href="/resume">CV</a>.
+      </p>
+
+      <p>I find cooking therapeutic, and I garden. I used to paint as well, though less lately.</p>
+
+      <p>
+        I read a fair bit — mostly fiction and history. History's a genuine interest, not just
+        background reading, and I like stories in general, so I watch a lot of movies too.
+      </p>
+
+      <p>
+        I like maths, and I'm into memes. I'm an animal person in general — as comfortable around a
+        cat or a cow as a dog.
+      </p>
+
+      <p>
+        I used to hike and play strategy games — Age of Empires mainly — but both have dropped off
+        since work got busier.
+      </p>
+
+      <p>
+        I'll be writing here fairly regularly too — mostly notes on what I'm working on and reading —
+        over on the <a href="/blog">blog</a>.
+      </p>
     </div>
-  </section>
+  </div>
 </BaseLayout>
