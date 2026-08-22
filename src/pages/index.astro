@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AsciiPortrait from '../components/AsciiPortrait.astro';
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -13,16 +14,21 @@ const featured = [
 ---
 
 <BaseLayout title="Home">
-  <section class="flex flex-col items-center gap-6 py-8 text-center">
-    <h1 class="cursor text-3xl font-bold">ROHIT UPADHYA</h1>
-    <p class="max-w-xl muted">
-      Hi, I'm Rohit &mdash; a computer science graduate passionate about AI, machine learning, NLP,
-      and open-source. I enjoy solving real-world problems with code and sharing what I learn.
-    </p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="/about" class="btn">about me</a>
-      <a href="/blog" class="btn">view blog</a>
-      <a href="/research" class="btn">see research</a>
+  <section class="flex flex-col items-center gap-8 py-8 sm:flex-row sm:items-center sm:gap-10">
+    <div class="w-56 shrink-0 sm:w-64">
+      <AsciiPortrait />
+    </div>
+    <div class="flex flex-1 flex-col items-center gap-6 text-center sm:items-start sm:text-left">
+      <h1 class="cursor text-3xl font-bold">ROHIT UPADHYA</h1>
+      <p class="max-w-xl muted">
+        Hi, I'm Rohit &mdash; a computer science graduate passionate about AI, machine learning, NLP,
+        and open-source. I enjoy solving real-world problems with code and sharing what I learn.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 sm:justify-start">
+        <a href="/about" class="btn">about me</a>
+        <a href="/blog" class="btn">view blog</a>
+        <a href="/research" class="btn">see research</a>
+      </div>
     </div>
   </section>
 
