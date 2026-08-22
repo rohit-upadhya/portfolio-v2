@@ -60,6 +60,7 @@ export const workExperience: ResumeRole[] = [
     period: 'July 2019 – July 2022',
     bullets: [
       'Led development of REST APIs to automate CMDB updates and incident workflows, improving operational efficiency across 30+ engineering teams.',
+      'Served as SME for Clarity PPM across 100+ projects, streamlining governance and ensuring consistent project reporting.',
       'Replaced premium analytics tools with ElasticSearch/Kibana, saving $15K+ quarterly and enhancing ticket trend visibility.',
     ],
   },
