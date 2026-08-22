@@ -1,14 +1,33 @@
 ---
 const year = new Date().getFullYear();
+
+// git-flavored build stamp — resolved at build time
+let commit = 'dev';
+try {
+  commit =
+    process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ||
+    (await import('node:child_process')).execSync('git rev-parse --short HEAD').toString().trim();
+} catch {
+  // no git / not in a repo — leave as "dev"
+}
+const buildDate = new Date().toISOString().slice(0, 10);
+const repoUrl = 'https://github.com/rohit-upadhya/portfolio-v2';
+const commitUrl = commit === 'dev' ? repoUrl : `${repoUrl}/commit/${commit}`;
 ---
 
 <footer class="border-t border-[color:var(--border-dim)]">
-  <div class="mx-auto flex max-w-4xl px-4 py-6 text-sm sm:px-6">
+  <div
+    class="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-6 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6"
+  >
     <p class="muted">
       &copy; {year} Rohit Upadhya &middot;
       <a href="/resume" class="ml-1">resume</a>
       &middot;
       <a href="mailto:rohitupadhya18@gmail.com" class="ml-1">contact</a>
+    </p>
+    <p class="muted text-xs">
+      <a href={commitUrl} target="_blank" rel="noopener noreferrer">main@{commit}</a>
+      &middot; built {buildDate}
     </p>
   </div>
 </footer>

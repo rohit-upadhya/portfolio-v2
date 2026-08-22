@@ -4,6 +4,7 @@ description: "Extends LexCLiPR with dual Graph Attention Networks (local 5-hop a
 links:
   - label: "huggingface"
     href: "https://huggingface.co/rohit-upadhya/lexclipr-graph-stack__mdpr-tied-pft-msmarco__original"
+tags: ["python", "pytorch", "PyG", "GAT", "contrastive-learning", "mDPR"]
 order: 1
 ---
 

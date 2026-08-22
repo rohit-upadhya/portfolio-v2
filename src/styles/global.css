@@ -140,6 +140,15 @@ pre {
   border-color: var(--border);
 }
 
+.tag {
+  font-size: 0.72rem;
+  color: var(--muted);
+  border: 1px solid var(--border-dim);
+  padding: 0.1rem 0.45rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
 .muted {
   color: var(--muted);
 }

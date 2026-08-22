@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="Page not found.">
+  <div class="term-window mt-4">
+    <div class="term-titlebar">
+      <span class="term-dot term-dot-red"></span>
+      <span class="term-dot term-dot-yellow"></span>
+      <span class="term-dot term-dot-green"></span>
+      <span class="term-title">404 &mdash; bash</span>
+    </div>
+    <div class="term-body">
+      <p class="term-line-out">
+        <span class="term-prompt">visitor@rohit:~$</span> cd <span id="path">{'<the page you were looking for>'}</span>
+      </p>
+      <p class="term-err">zsh: no such file or directory</p>
+      <p class="term-comment"># that page doesn't exist (or moved).</p>
+      <p class="term-line-out">
+        <span class="term-prompt">visitor@rohit:~$</span>{' '}
+        <a href="/" class="term-link">cd /</a>{' '}
+        <span class="term-comment">&larr; take me home</span>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  // show the actual bad path the visitor hit
+  var el = document.getElementById('path');
+  if (el) el.textContent = location.pathname;
+</script>
+
+<style is:global>
+  .term-window {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #0b0e0c;
+  }
+  .term-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.75rem;
+    background: #1a1d1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .term-dot-red { background: #ff5f56; }
+  .term-dot-yellow { background: #ffbd2e; }
+  .term-dot-green { background: #27c93f; }
+  .term-title { margin-left: 0.5rem; color: #7a7f7a; font-size: 0.75rem; }
+  .term-body { padding: 1rem; font-size: 0.9rem; line-height: 1.8; color: #d8ecd8; }
+  .term-body p { margin: 0; }
+  .term-prompt { color: #7fbf8a; }
+  .term-err { color: #e88; }
+  .term-comment { color: #5c6b5c; }
+  .term-link { color: #7fbf8a; text-decoration: underline; }
+  .term-link:hover { color: #a6e3ae; }
+</style>

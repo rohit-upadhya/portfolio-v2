@@ -6,6 +6,7 @@ links:
     href: "https://huggingface.co/rohit-upadhya/SmoLLM-109M-base"
   - label: "github"
     href: "https://github.com/rohit-upadhya/smol-llm"
+tags: ["python", "pytorch", "transformers", "RoPE", "SwiGLU", "BPE"]
 order: 2
 ---
 

@@ -6,7 +6,7 @@ description: "Why I'm committing to one post a week — and what to expect from 
 
 This is the first post, so it's mostly a note to myself.
 
-I read a lot — papers, other people's blogs, source code — and most of it evaporates within a week. Writing is how I find out whether I actually understood something, or just nodded along. So I'm going to try posting once a week: not essays, not polished tutorials, just notes on whatever I was building or reading that week, written well enough that a version of me from a month ago could follow along.
+Most of what I pick up — from papers, blogs, source code — evaporates within a week. Writing it down helps it stick, and usually shows me the parts I didn't really get. So I'm going to try posting once a week: not essays, not polished tutorials, just notes on whatever I was building or reading that week, written well enough that a version of me from a month ago could follow along.
 
 ## what this will probably cover
 
