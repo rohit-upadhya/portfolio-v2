@@ -49,19 +49,27 @@ function isActive(href: string) {
       <button type="button" class="nav-link theme-toggle" aria-label="Toggle color theme"></button>
     </nav>
 
+    <button type="button" class="nav-link theme-toggle text-sm sm:hidden" aria-label="Toggle color theme"></button>
+
     <nav
-      class="absolute inset-x-0 top-full hidden flex-col gap-3 border-b border-[color:var(--border-dim)] bg-[color:var(--bg)] px-4 py-4 peer-checked:flex sm:hidden"
+      class="absolute inset-x-0 top-full hidden border-b border-[color:var(--border-dim)] bg-[color:var(--bg)] px-4 py-5 text-sm peer-checked:flex sm:hidden"
     >
-      {navLinks.map((link) => (
-        <a href={link.href} class="nav-link">{link.label}</a>
-      ))}
-      <hr class="my-1" />
-      {socialLinks.map((link) => (
-        <a href={link.href} target="_blank" rel="noopener noreferrer" class="nav-link">
-          {link.label}
-        </a>
-      ))}
-      <button type="button" class="nav-link theme-toggle text-left" aria-label="Toggle color theme"></button>
+      <div class="flex w-full justify-between gap-8">
+        <div class="flex flex-col gap-3">
+          {navLinks.map((link) => (
+            <a href={link.href} class="nav-link" aria-current={isActive(link.href) ? 'page' : undefined}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <div class="flex flex-col gap-3">
+          {socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" class="nav-link">
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -71,7 +79,7 @@ function isActive(href: string) {
     function otherTheme() {
       return document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     }
-    var GLYPH = { light: '*', dark: ')' };
+    var GLYPH = { light: '☀', dark: '☾' };
     function render() {
       var target = otherTheme();
       document.querySelectorAll('.theme-toggle').forEach(function (btn) {
