@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SmolLLMDemo from '../../components/SmolLLMDemo.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -30,6 +31,9 @@ const { Content } = await render(item);
         </div>
       )}
     </header>
+
+    {item.id === 'smollm' && <SmolLLMDemo />}
+
     <div class="prose-content">
       <Content />
     </div>

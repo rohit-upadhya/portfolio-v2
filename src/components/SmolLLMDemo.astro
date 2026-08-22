@@ -1,0 +1,278 @@
+---
+const apiUrl = import.meta.env.PUBLIC_SMOLLM_API_URL;
+
+const examples = [
+  'write a short poem about the ocean',
+  'what is python?',
+  'explain how to make tea',
+];
+---
+
+<section class="flex flex-col gap-3" id="smollm-demo">
+  <div class="flex items-baseline justify-between gap-4">
+    <h2 class="font-bold">try it — live inference</h2>
+    <span class="muted text-xs whitespace-nowrap">109M params &middot; CPU</span>
+  </div>
+  <p class="muted text-sm">
+    Ask the instruct checkpoint something. It's tiny, so expect fluent-sounding but often
+    unreliable answers — and a slow first response if the box was asleep.
+  </p>
+
+  {apiUrl ? (
+    <div class="term-window">
+      <div class="term-titlebar">
+        <span class="term-dot term-dot-red"></span>
+        <span class="term-dot term-dot-yellow"></span>
+        <span class="term-dot term-dot-green"></span>
+        <span class="term-title">smollm &mdash; bash</span>
+      </div>
+      <div class="term-body" id="smollm-body">
+        {examples.map((ex) => (
+          <p class="term-hint">
+            <span class="term-comment"># try:</span>{' '}
+            <button type="button" class="term-suggestion" data-prompt={ex}>{ex}</button>
+          </p>
+        ))}
+
+        <div id="smollm-log"></div>
+
+        <form id="smollm-form" class="term-line">
+          <span class="term-prompt">user@smollm:~$</span>
+          <input
+            id="smollm-prompt"
+            class="term-input"
+            type="text"
+            autocomplete="off"
+            maxlength="300"
+            aria-label="ask the model something"
+            size="1"
+            required
+          />
+          <span class="term-caret" aria-hidden="true">_</span>
+        </form>
+      </div>
+    </div>
+  ) : (
+    <p class="muted text-sm">Demo temporarily unavailable.</p>
+  )}
+</section>
+
+<script define:vars={{ apiUrl }}>
+  const form = document.getElementById('smollm-form');
+  if (form && apiUrl) {
+    const promptEl = document.getElementById('smollm-prompt');
+    const logEl = document.getElementById('smollm-log');
+    const bodyEl = document.getElementById('smollm-body');
+
+    function sizeInput() {
+      promptEl.style.width = Math.max(promptEl.value.length, 1) + 'ch';
+    }
+    promptEl.addEventListener('input', sizeInput);
+    sizeInput();
+
+    const history = [];
+    let historyIndex = -1;
+
+    promptEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+      if (history.length === 0) return;
+      e.preventDefault();
+
+      if (e.key === 'ArrowUp') {
+        historyIndex = historyIndex === -1 ? history.length - 1 : Math.max(historyIndex - 1, 0);
+      } else {
+        if (historyIndex === -1) return;
+        historyIndex = historyIndex === history.length - 1 ? -1 : historyIndex + 1;
+      }
+
+      promptEl.value = historyIndex === -1 ? '' : history[historyIndex];
+      sizeInput();
+      promptEl.setSelectionRange(promptEl.value.length, promptEl.value.length);
+    });
+
+    async function run(prompt) {
+      if (history[history.length - 1] !== prompt) history.push(prompt);
+      historyIndex = -1;
+
+      promptEl.value = '';
+      form.classList.add('hidden');
+
+      const exchange = document.createElement('div');
+      exchange.className = 'term-exchange';
+      exchange.innerHTML =
+        '<p class="term-question"><span class="term-prompt">user@smollm:~$</span> <span class="term-question-text"></span></p>' +
+        '<p class="term-response"><span class="term-thinking">thinking</span><span class="term-cursor"></span></p>';
+      exchange.querySelector('.term-question-text').textContent = prompt;
+      const responseEl = exchange.querySelector('.term-response');
+      logEl.appendChild(exchange);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      try {
+        const res = await fetch(apiUrl + '/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, max_tokens: 120 }),
+        });
+
+        if (!res.ok) throw new Error(`request failed (${res.status})`);
+
+        const data = await res.json();
+        responseEl.textContent = data.response;
+      } catch (err) {
+        responseEl.textContent = "couldn't reach the model — try again in a moment.";
+      } finally {
+        form.classList.remove('hidden');
+        promptEl.value = '';
+        sizeInput();
+        promptEl.focus();
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const prompt = promptEl.value.trim();
+      if (!prompt) return;
+      run(prompt);
+    });
+
+    document.querySelectorAll('.term-suggestion').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (form.classList.contains('hidden')) return;
+        run(btn.dataset.prompt);
+      });
+    });
+  }
+</script>
+
+<style is:global>
+  .term-window {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #0b0e0c;
+  }
+
+  .term-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.75rem;
+    background: #1a1d1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .term-dot-red {
+    background: #ff5f56;
+  }
+  .term-dot-yellow {
+    background: #ffbd2e;
+  }
+  .term-dot-green {
+    background: #27c93f;
+  }
+  .term-title {
+    margin-left: 0.5rem;
+    color: #7a7f7a;
+    font-size: 0.75rem;
+  }
+
+  .term-body {
+    padding: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #d8ecd8;
+    max-height: 22rem;
+    overflow-y: auto;
+  }
+
+  .term-hint {
+    margin: 0 0 0.3rem;
+  }
+  .term-comment {
+    color: #5c6b5c;
+  }
+
+  .term-suggestion {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #7fbf8a;
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+  }
+  .term-suggestion:hover {
+    color: #a6e3ae;
+  }
+
+  .term-exchange {
+    margin-bottom: 1rem;
+  }
+  .term-question {
+    margin: 0 0 0.35rem;
+    color: #f2fbf2;
+    font-weight: 600;
+  }
+  .term-question .term-prompt {
+    font-weight: 400;
+  }
+  .term-response {
+    margin: 0;
+    padding-left: 1.1rem;
+    white-space: pre-wrap;
+    color: #8fb89a;
+  }
+  .term-thinking {
+    color: #5c6b5c;
+  }
+  .term-cursor::after {
+    content: '_';
+    color: #7fbf8a;
+    animation: term-blink 1s steps(1) infinite;
+  }
+  @keyframes term-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .term-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .term-line.hidden {
+    display: none;
+  }
+  .term-prompt {
+    color: #7fbf8a;
+    white-space: nowrap;
+  }
+  .term-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #e8f5e8;
+    font: inherit;
+    caret-color: transparent;
+    min-width: 0;
+    padding: 0;
+  }
+  .term-caret {
+    color: #7fbf8a;
+    animation: term-blink 1s steps(1) infinite;
+  }
+</style>
