@@ -1,0 +1,61 @@
+---
+// Grounded facts only — edit the "now" line (and any other) as things change.
+const rows: [string, string][] = [
+  ['role', 'Software Engineer — ML @ Whatfix'],
+  ['focus', 'LLMs · retrieval · agents'],
+  ['stack', 'Python · SQL · JavaScript'],
+  ['school', 'MSc, TU Munich'],
+  ['based', 'Bangalore, India'],
+  ['now', 'writing weekly notes'],
+];
+---
+
+<div class="neofetch">
+  <p class="neo-head"><span class="neo-accent">rohit</span>@<span class="neo-accent">portfolio</span></p>
+  <p class="neo-rule">—————————————————————</p>
+  <dl class="neo-list">
+    {rows.map(([k, v]) => (
+      <div class="neo-row">
+        <dt class="neo-key">{k}</dt>
+        <dd class="neo-val">{v}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+
+<style>
+  .neofetch {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    text-align: left;
+  }
+  .neo-head {
+    margin: 0;
+    font-weight: 700;
+  }
+  .neo-accent {
+    color: var(--accent);
+  }
+  .neo-rule {
+    margin: 0 0 0.35rem;
+    color: var(--border);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .neo-list {
+    margin: 0;
+  }
+  .neo-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .neo-key {
+    color: var(--accent);
+    min-width: 3.5rem;
+    flex-shrink: 0;
+  }
+  .neo-val {
+    margin: 0;
+    color: var(--fg);
+  }
+</style>

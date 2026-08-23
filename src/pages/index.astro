@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AsciiPortrait from '../components/AsciiPortrait.astro';
+import Neofetch from '../components/Neofetch.astro';
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -25,10 +26,7 @@ const featured = [
         </div>
         <h1 class="cursor text-2xl font-bold sm:text-3xl">ROHIT UPADHYA</h1>
       </div>
-      <p class="max-w-xl muted">
-        Hi, I'm Rohit &mdash; a computer science graduate passionate about AI, machine learning, NLP,
-        and open-source. I enjoy solving real-world problems with code and sharing what I learn.
-      </p>
+      <Neofetch />
       <div class="flex flex-wrap justify-center gap-4 sm:hidden">
         <a href="/about" class="btn">about me</a>
         <a href="/blog" class="btn">view blog</a>

@@ -16,7 +16,8 @@ const examples = [
   <p class="muted text-sm">
     Ask the instruct checkpoint something. It's a 109M-param model running on a free-tier CPU
     box, so answers can be fluent-sounding but wildly wrong, and generation is slow — even more so
-    on the first request if the box was asleep.
+    on the first request if the box was asleep. Each prompt is answered on its own — there's no
+    conversation history, so it won't remember what you asked before.
   </p>
 
   {apiUrl ? (
