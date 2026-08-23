@@ -116,26 +116,51 @@ const examples = [
       logEl.appendChild(exchange);
       bodyEl.scrollTop = bodyEl.scrollHeight;
 
-      try {
-        const res = await fetch(apiUrl + '/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, max_tokens: 120 }),
-        });
+      const MAX_ATTEMPTS = 3; // initial try + 2 retries
+      let ok = false;
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 40000);
+        try {
+          const res = await fetch(apiUrl + '/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt, max_tokens: 120 }),
+            signal: controller.signal,
+          });
 
-        if (!res.ok) throw new Error(`request failed (${res.status})`);
+          if (!res.ok) throw new Error('request failed (' + res.status + ')');
 
-        const data = await res.json();
-        responseEl.textContent = data.response;
-      } catch (err) {
-        responseEl.textContent = "couldn't reach the model — try again in a moment.";
-      } finally {
-        form.classList.remove('hidden');
-        promptEl.value = '';
-        sizeInput();
-        promptEl.focus();
-        bodyEl.scrollTop = bodyEl.scrollHeight;
+          const data = await res.json();
+          responseEl.textContent = data.response;
+          ok = true;
+          break;
+        } catch (err) {
+          if (attempt < MAX_ATTEMPTS) {
+            responseEl.innerHTML =
+              '<span class="term-thinking">waking the model, retrying (' +
+              attempt +
+              '/' +
+              (MAX_ATTEMPTS - 1) +
+              ')…</span><span class="term-cursor"></span>';
+            bodyEl.scrollTop = bodyEl.scrollHeight;
+            await new Promise((r) => setTimeout(r, 1500));
+          }
+        } finally {
+          clearTimeout(timer);
+        }
       }
+
+      if (!ok) {
+        responseEl.textContent =
+          "couldn't reach the model after a few tries — it may be waking up, give it a minute.";
+      }
+
+      form.classList.remove('hidden');
+      promptEl.value = '';
+      sizeInput();
+      promptEl.focus();
+      bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
     form.addEventListener('submit', (e) => {
