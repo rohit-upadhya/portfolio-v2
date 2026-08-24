@@ -1,19 +1,34 @@
 <img
   src="/ascii-portrait.png"
   alt="ASCII art portrait of Rohit Upadhya"
-  class="ascii-portrait"
+  class="ascii-portrait ap-light"
+  width="722"
+  height="660"
+/>
+<img
+  src="/ascii-portrait-dark.png"
+  alt="ASCII art portrait of Rohit Upadhya"
+  class="ascii-portrait ap-dark"
   width="722"
   height="660"
 />
 
 <style>
+  /* Two pre-rendered versions: the positive (dark strokes) for light mode and
+     a photographic negative (light strokes) for dark mode — swapped by theme,
+     no filters, no backdrop. */
   .ascii-portrait {
-    width: min(100%, 26rem);
+    display: block;
+    width: 100%;
     height: auto;
-    filter: invert(1);
   }
-
-  :root[data-theme='light'] .ascii-portrait {
-    filter: none;
+  .ap-dark {
+    display: none;
+  }
+  :root[data-theme='dark'] .ap-light {
+    display: none;
+  }
+  :root[data-theme='dark'] .ap-dark {
+    display: block;
   }
 </style>
