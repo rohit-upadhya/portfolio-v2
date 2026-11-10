@@ -1,6 +1,6 @@
 ---
 title: "Starting a weekly blog"
-date: 2026-08-22
+date: 2026-11-08
 description: "Why I'm committing to one post a week — and what to expect from this."
 ---
 
