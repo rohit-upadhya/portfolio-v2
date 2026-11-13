@@ -25,10 +25,11 @@ export const workExperience: ResumeRole[] = [
     location: 'Bangalore, India',
     period: 'January 2026 – Present',
     bullets: [
+      'Delivered two paid customer pilots for the Computer Use Agent and now lead the implementation of its first full paid deployment; work contributed to six-figure enterprise business.',
       'Designed the evaluation framework for a production Computer Use Agent — run telemetry, failure taxonomy, and error attribution driving prompt and architecture iteration; 62% autonomous task completion across 800+ real-world sites.',
       'Built a benchmarking framework comparing Gemini against the incumbent Claude-based agent on task accuracy and latency, driving model selection for enterprise deployments.',
-      'Found the dominant failure category conflated environment limits with recoverable agent errors; recategorizing separated true blockers from fixable behavior and redirected improvement effort.',
       'Architected an end-to-end Sales Ops automation integrating a CUA with event-driven Power Automate pipelines triggered by incoming emails; cut deal processing time by 30 min/sale (~180 min/week).',
+      'Built BYOK (bring-your-own-key) support end-to-end — envelope-encryption key hierarchy (DEK/KEK) and key-management architecture, letting enterprise customers run the agent against their own Azure OpenAI / Anthropic accounts and clearing data-residency review in security assessments.',
     ],
   },
   {
@@ -60,7 +61,6 @@ export const workExperience: ResumeRole[] = [
     period: 'July 2019 – July 2022',
     bullets: [
       'Led development of REST APIs to automate CMDB updates and incident workflows, improving operational efficiency across 30+ engineering teams.',
-      'Served as SME for Clarity PPM across 100+ projects, streamlining governance and ensuring consistent project reporting.',
       'Replaced premium analytics tools with ElasticSearch/Kibana, saving $15K+ quarterly and enhancing ticket trend visibility.',
     ],
   },
