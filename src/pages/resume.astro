@@ -172,10 +172,15 @@ import { contact, workExperience, publications, education, skills, projects } fr
   .resume ul {
     margin: 0.35rem 0 0;
     padding-left: 1.1rem;
+    list-style: disc;
   }
   .resume li {
     font-size: 0.85rem;
-    margin-top: 0.25rem;
+    margin-top: 0.4rem;
+    padding-left: 0.15rem;
+  }
+  .resume li::marker {
+    color: var(--muted);
   }
   .skills-block {
     font-size: 0.85rem;
