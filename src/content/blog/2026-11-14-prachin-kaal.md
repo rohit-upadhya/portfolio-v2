@@ -20,7 +20,7 @@ What really got me hooked was Age of Empires III. While AoE 2 is the more popula
 
 In college, we played the LAN-based multiplayer, and would legit spend days playing games. A single game would take at least 4 hours to complete.
 
-## history
+## student of history
 
 While I always liked history, Age of Empires sparked an even deeper interest in it. I dove deep into European history especially. I read extensively about the various civilizations in AoE 3, and about each civ's advantages and why those advantages exist.
 
